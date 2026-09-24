@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
+
 /* ════════════════════════════════════════
    DESIGN TOKENS
 ════════════════════════════════════════ */
@@ -881,6 +882,78 @@ footer{
 .fase-blk{border-left:2px solid rgba(245,158,11,.35);padding:16px 0 16px 20px;margin-top:20px}
 .fase-blk+.fase-blk{margin-top:24px}
 .fase-lbl{font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin-bottom:18px}
+
+
+/* ── INPUT DESTAQUE ── */
+.f input{
+  width:100%;
+  background:rgba(34,211,238,.06);
+  border:1px solid rgba(34,211,238,.22);
+  border-radius:8px;
+  color:var(--white);
+  font-family:var(--fb);
+  font-size:1rem;
+  font-weight:600;
+  padding:10px 14px;
+  outline:none;
+  transition:background .2s, border-color .2s, box-shadow .2s;
+}
+.f input:focus{
+  background:rgba(34,211,238,.12);
+  border-color:var(--teal);
+  box-shadow:0 0 0 3px rgba(34,211,238,.15);
+}
+.f input[type="text"]{font-weight:400;font-size:.93rem}
+.f-underline{display:none} /* não usar mais a linha */
+.f-calc{
+  background:rgba(34,211,238,.08);
+  border:1px solid rgba(34,211,238,.2);
+  border-radius:8px;
+  padding:10px 14px;
+  font-family:var(--fd);font-size:1rem;font-weight:700;
+  color:var(--teal);min-height:44px;display:flex;align-items:center;
+}
+.f-lbl{
+  font-family:var(--fd);font-size:.68rem;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--slate-l);margin-bottom:6px;
+}
+.f-hint{font-size:.72rem;color:var(--slate);line-height:1.5;margin-top:6px}
+::placeholder{color:rgba(100,116,139,.4);font-style:italic;font-size:.85rem}
+
+/* ── ISTRIP ── */
+.istrip{display:flex;flex-wrap:wrap;gap:0;margin-top:18px;
+  background:var(--bg1);border:1px solid var(--b2);border-radius:var(--r2);overflow:hidden}
+.istrip-item{flex:1;min-width:130px;padding:12px 18px;border-right:1px solid var(--b3)}
+.istrip-item:last-child{border-right:none}
+.istrip-lbl{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--slate);margin-bottom:4px}
+.istrip-val{font-family:var(--fd);font-size:.95rem;font-weight:700;color:var(--white)}
+
+/* ── FASE BLOCK ── */
+.fase-blk{border-left:2px solid rgba(245,158,11,.35);padding:0 0 0 20px;margin-top:18px}
+.fase-lbl{font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+
+/* ── PAGE TABS (módulos como páginas) ── */
+.page{display:none;animation:fadeUp .28s ease}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* nav override para active */
+.nav a.active{color:var(--teal);border-bottom:2px solid var(--teal)}
+.nav a.active .nav-pill{background:var(--teal-glow);color:var(--teal);border-color:var(--teal)}
+
+@media(max-width:720px){
+  .fg,.fg2,.fg3{grid-template-columns:1fr 1fr}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .inh-grid{grid-template-columns:1fr 1fr}
+  .comp-grid{grid-template-columns:1fr}
+  .istrip-item{min-width:100px}
+}
+@media(max-width:400px){
+  .fg,.fg2,.fg3{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -904,30 +977,30 @@ footer{
   <div class="header-right"><div class="year-badge">2025</div></div>
 </header>
 
-<!-- NAV -->
-<nav class="nav" aria-label="Seções">
-  <a href="#s1"><span class="nav-pill">C1</span> 1 Suplementação</a>
-  <a href="#s2"><span class="nav-pill">C2</span> 2 Suplementações</a>
-  <a href="#s3"><span class="nav-pill">≡</span> Comparativo</a>
-  <a href="#s4"><span class="nav-pill">PE</span> Ponto de Equilíbrio</a>
-  <a href="#s5"><span class="nav-pill">?</span> Glossário</a>
+<!-- NAV — cada link troca de página -->
+<nav class="nav" aria-label="Módulos" id="main-nav">
+  <a href="#" class="active" onclick="showPage('p-calc',this)"><span class="nav-pill">📋</span> Simulação</a>
+  <a href="#" onclick="showPage('p-comp',this)"><span class="nav-pill">≡</span> Comparativo</a>
+  <a href="#" onclick="showPage('p-pe',this)"><span class="nav-pill">PE</span> Ponto de Equilíbrio</a>
+  <a href="#" onclick="showPage('p-ref',this)"><span class="nav-pill">?</span> Glossário</a>
 </nav>
 
-<main>
+<main style="max-width:1040px;margin:0 auto;padding:2.5rem 2rem 4rem">
 
-<!-- ════════════════════════════
-     CENÁRIO 1
-════════════════════════════ -->
-<div class="ps" id="s1">
+<!-- ══════════════════════════════════════
+     PÁGINA 1 — SIMULAÇÃO
+══════════════════════════════════════ -->
+<div class="page active" id="p-calc">
+
   <div class="pt">
     <div class="pt-left">
       <div class="pt-eyebrow">Simulação</div>
-      <div class="pt-title">Uma Suplementação</div>
+      <div class="pt-title">Cálculo de Resultados Pecuários</div>
     </div>
     <div class="pt-badges"><span class="badge badge-c">Proteinado</span></div>
   </div>
 
-  <!-- 1. Rebanho -->
+  <!-- 01 Rebanho -->
   <div class="sc" id="c1s1">
     <div class="sc-hd" onclick="tog('c1s1')">
       <div class="sc-num">01</div><div class="sc-divider"></div>
@@ -935,13 +1008,36 @@ footer{
     </div>
     <div class="sc-body">
       <div class="fg">
-        <div class="f"><div class="f-lbl">Descrição do Lote</div><input id="v1_desc" type="text" class="f-inp-text"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Qtd. de Cabeças</div><input id="v1_qtd" type="number" min="1"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Peso Inicial (kg/cab.)</div><input id="v1_pi" type="number" min="0" step="1"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Peso Final / Venda (kg/cab.)</div><input id="v1_pf" type="number" min="0" step="1" oninput="updArb1()"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">GMD — Ganho Médio Diário (g/dia)</div><input id="v1_gmd" type="number" min="1" step="1"><div class="f-underline"></div><div class="f-hint">Ex.: 583 g/dia. Prazo calculado automaticamente.</div></div>
-        <div class="f"><div class="f-lbl">Valor de Aquisição (R$/cabeça)</div><input id="v1_aq" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Custo Mensal do Gado (R$/cab./mês)</div><input id="v1_cmg" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Sanidade, vacinas, sal mineral. Use 0 se não houver.</div></div>
+        <div class="f">
+          <div class="f-lbl">Descrição do Lote</div>
+          <input id="v1_desc" type="text">
+        </div>
+        <div class="f">
+          <div class="f-lbl">Qtd. de Cabeças</div>
+          <input id="v1_qtd" type="number" min="1">
+        </div>
+        <div class="f">
+          <div class="f-lbl">Peso Inicial (kg/cab.)</div>
+          <input id="v1_pi" type="number" min="0" step="1">
+        </div>
+        <div class="f">
+          <div class="f-lbl">Peso Final / Venda (kg/cab.)</div>
+          <input id="v1_pf" type="number" min="0" step="1" oninput="updArb1()">
+        </div>
+        <div class="f">
+          <div class="f-lbl">GMD — Ganho Médio Diário (g/dia)</div>
+          <input id="v1_gmd" type="number" min="1" step="1">
+          <div class="f-hint">Ex.: 583 g/dia. O prazo em meses é calculado automaticamente.</div>
+        </div>
+        <div class="f">
+          <div class="f-lbl">Valor de Aquisição (R$/cabeça)</div>
+          <input id="v1_aq" type="number" min="0" step="0.01">
+        </div>
+        <div class="f">
+          <div class="f-lbl">Custo Mensal do Gado (R$/cab./mês)</div>
+          <input id="v1_cmg" type="number" min="0" step="0.01">
+          <div class="f-hint">Sanidade, vacinas, sal mineral. Use 0 se não houver.</div>
+        </div>
       </div>
       <div class="istrip" id="v1_strip" style="display:none">
         <div class="istrip-item"><div class="istrip-lbl">Peso a Ganhar</div><div class="istrip-val" id="v1s_gp">—</div></div>
@@ -952,7 +1048,7 @@ footer{
     </div>
   </div>
 
-  <!-- 2. Arrendamento -->
+  <!-- 02 Arrendamento -->
   <div class="sc" id="c1s2">
     <div class="sc-hd" onclick="tog('c1s2')">
       <div class="sc-num">02</div><div class="sc-divider"></div>
@@ -960,12 +1056,15 @@ footer{
     </div>
     <div class="sc-body">
       <div class="fg fg2">
-        <div class="f"><div class="f-lbl">Valor Mensal p/ Cabeça (R$)</div><input id="v1_arr" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
+        <div class="f">
+          <div class="f-lbl">Valor Mensal p/ Cabeça (R$)</div>
+          <input id="v1_arr" type="number" min="0" step="0.01">
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- 3. Mão de Obra -->
+  <!-- 03 Mão de Obra -->
   <div class="sc" id="c1s3">
     <div class="sc-hd" onclick="tog('c1s3')">
       <div class="sc-num">03</div><div class="sc-divider"></div>
@@ -973,13 +1072,20 @@ footer{
     </div>
     <div class="sc-body">
       <div class="fg fg2">
-        <div class="f"><div class="f-lbl">Salários e Encargos (R$/funcionário)</div><input id="v1_sal" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Total mensal incluindo INSS, FGTS e demais encargos.</div></div>
-        <div class="f"><div class="f-lbl">Qtd. de Funcionários</div><input id="v1_nf" type="number" min="0"><div class="f-underline"></div><div class="f-hint">Use 0 se não houver mão de obra contratada.</div></div>
+        <div class="f">
+          <div class="f-lbl">Salários e Encargos (R$/funcionário)</div>
+          <input id="v1_sal" type="number" min="0" step="0.01">
+          <div class="f-hint">Total mensal incluindo INSS, FGTS e demais encargos. Use 0 se não houver.</div>
+        </div>
+        <div class="f">
+          <div class="f-lbl">Qtd. de Funcionários</div>
+          <input id="v1_nf" type="number" min="0">
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- 4. Suplementação -->
+  <!-- 04 Suplementação -->
   <div class="sc" id="c1s4">
     <div class="sc-hd" onclick="tog('c1s4')">
       <div class="sc-num">04</div><div class="sc-divider"></div>
@@ -987,20 +1093,33 @@ footer{
     </div>
     <div class="sc-body">
       <div class="fg fg3">
-        <div class="f"><div class="f-lbl">Kg p/ Saco</div><input id="v1_kgsc" type="number" min="1" step="0.5"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Valor do Saco (R$)</div><input id="v1_vls" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Fornecimento (% do peso vivo/dia)</div><input id="v1_pct" type="number" min="0.01" step="0.01"><div class="f-underline"></div><div class="f-hint">Ex.: 0,1% de 285 kg = 285 g/dia por animal.</div></div>
+        <div class="f">
+          <div class="f-lbl">Kg p/ Saco</div>
+          <input id="v1_kgsc" type="number" min="1" step="0.5">
+        </div>
+        <div class="f">
+          <div class="f-lbl">Valor do Saco (R$)</div>
+          <input id="v1_vls" type="number" min="0" step="0.01">
+        </div>
+        <div class="f">
+          <div class="f-lbl">Consumo Diário do Suplemento (% do peso vivo)</div>
+          <input id="v1_pct" type="number" min="0.01" step="0.01">
+          <div class="f-hint">
+            Quanto o animal come de suplemento por dia em relação ao seu peso.<br>
+            Ex.: animal de 285 kg com 0,1% → come 285 g de suplemento por dia.
+          </div>
+        </div>
       </div>
       <div class="istrip" id="v1_supstrip" style="display:none">
         <div class="istrip-item"><div class="istrip-lbl">Custo do Kg</div><div class="istrip-val" id="v1s_vk">—</div></div>
-        <div class="istrip-item"><div class="istrip-lbl">Peso Médio</div><div class="istrip-val" id="v1s_pm">—</div></div>
+        <div class="istrip-item"><div class="istrip-lbl">Peso Médio do Lote</div><div class="istrip-val" id="v1s_pm">—</div></div>
         <div class="istrip-item"><div class="istrip-lbl">Consumo Diário/cab.</div><div class="istrip-val" id="v1s_cd">—</div></div>
         <div class="istrip-item"><div class="istrip-lbl">Custo Diário/cab.</div><div class="istrip-val" id="v1s_cdd">—</div></div>
       </div>
     </div>
   </div>
 
-  <!-- 5. Outras Despesas -->
+  <!-- 05 Outras Despesas -->
   <div class="sc" id="c1s5">
     <div class="sc-hd" onclick="tog('c1s5')">
       <div class="sc-num">05</div><div class="sc-divider"></div>
@@ -1008,12 +1127,16 @@ footer{
     </div>
     <div class="sc-body">
       <div class="fg fg2">
-        <div class="f"><div class="f-lbl">Valor Médio p/ Cabeça / Mês (R$)</div><input id="v1_out" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Veterinário, combustíveis, manutenção.</div></div>
+        <div class="f">
+          <div class="f-lbl">Valor Médio p/ Cabeça / Mês (R$)</div>
+          <input id="v1_out" type="number" min="0" step="0.01">
+          <div class="f-hint">Veterinário, combustíveis, manutenção e outros custos eventuais.</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- 6. Venda -->
+  <!-- 06 Venda -->
   <div class="sc" id="c1s6">
     <div class="sc-hd" onclick="tog('c1s6')">
       <div class="sc-num">06</div><div class="sc-divider"></div>
@@ -1021,15 +1144,27 @@ footer{
     </div>
     <div class="sc-body">
       <div class="fg fg3">
-        <div class="f"><div class="f-lbl">Valor da Arroba (R$/@)</div><input id="v1_arb" type="number" min="0" step="1" oninput="updArb1()"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Rendimento de Carcaça (%)</div><input id="v1_rend" type="number" min="30" max="70" step="0.1" oninput="updArb1()"><div class="f-underline"></div><div class="f-hint">Padrão Nelore pastagem: 50,5%. Uma @ = 15 kg de carcaça.</div></div>
-        <div class="f"><div class="f-lbl">Arrobas / Animal (calculado)</div><div class="f-calc" id="v1_ac">—</div></div>
+        <div class="f">
+          <div class="f-lbl">Valor da Arroba (R$/@)</div>
+          <input id="v1_arb" type="number" min="0" step="1" oninput="updArb1()">
+        </div>
+        <div class="f">
+          <div class="f-lbl">Rendimento de Carcaça (%)</div>
+          <input id="v1_rend" type="number" min="30" max="70" step="0.1" oninput="updArb1()">
+          <div class="f-hint">Padrão Nelore pastagem: 50,5%. Uma arroba (@) equivale a 15 kg de carcaça.</div>
+        </div>
+        <div class="f">
+          <div class="f-lbl">Arrobas / Animal (calculado)</div>
+          <div class="f-calc" id="v1_ac">—</div>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="btn-wrap">
-    <button class="btn btn-t" onclick="calcV1()"><span class="btn-icon">⚡</span> Calcular Resultados</button>
+    <button class="btn btn-t" id="btn-calcular" onclick="calcV1()">
+      <span class="btn-icon">⚡</span> Calcular Resultados
+    </button>
   </div>
 
   <div class="res-box" id="v1-res">
@@ -1041,161 +1176,18 @@ footer{
   </div>
 </div>
 
-<!-- ════════════════════════════
-     CENÁRIO 2
-════════════════════════════ -->
-<div class="ps" id="s2">
-  <div class="pt">
-    <div class="pt-left">
-      <div class="pt-eyebrow">Simulação</div>
-      <div class="pt-title">Duas Suplementações</div>
-    </div>
-    <div class="pt-badges">
-      <span class="badge badge-c">Recria</span>
-      <span class="badge badge-a">Engorda</span>
-    </div>
-  </div>
-
-  <!-- 1. Rebanho V2 -->
-  <div class="sc" id="c2s1">
-    <div class="sc-hd" onclick="tog('c2s1')">
-      <div class="sc-num">01</div><div class="sc-divider"></div>
-      <div class="sc-ttl">Informações do Rebanho</div><div class="sc-chv">▼</div>
-    </div>
-    <div class="sc-body">
-      <div class="fase-blk">
-        <div class="fase-lbl">Fase 1 — Recria (Proteinado)</div>
-        <div class="fg">
-          <div class="f"><div class="f-lbl">Descrição</div><input id="v2_d1" type="text" class="f-inp-text"><div class="f-underline"></div></div>
-          <div class="f"><div class="f-lbl">Qtd. de Cabeças</div><input id="v2_qtd" type="number" min="1"><div class="f-underline"></div></div>
-          <div class="f"><div class="f-lbl">Peso Inicial (kg/cab.)</div><input id="v2_pi" type="number" min="0" step="1"><div class="f-underline"></div></div>
-          <div class="f"><div class="f-lbl">Peso Final Fase 1 (kg/cab.)</div><input id="v2_pf1" type="number" min="0" step="1"><div class="f-underline"></div></div>
-          <div class="f"><div class="f-lbl">GMD Fase 1 (g/dia)</div><input id="v2_g1" type="number" min="1" step="1"><div class="f-underline"></div></div>
-          <div class="f"><div class="f-lbl">Valor de Aquisição (R$/cabeça)</div><input id="v2_aq" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
-          <div class="f"><div class="f-lbl">Custo Mensal do Gado (R$/cab./mês)</div><input id="v2_cmg" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Sanidade, vacinas, sal mineral. Use 0 se não houver.</div></div>
-        </div>
-      </div>
-      <div class="fase-blk">
-        <div class="fase-lbl">Fase 2 — Engorda (Proteico Energético)</div>
-        <div class="fg">
-          <div class="f"><div class="f-lbl">Descrição</div><input id="v2_d2" type="text" class="f-inp-text"><div class="f-underline"></div></div>
-          <div class="f"><div class="f-lbl">Peso Final Fase 2 / Venda (kg)</div><input id="v2_pf2" type="number" min="0" step="1" oninput="updArb2()"><div class="f-underline"></div></div>
-          <div class="f"><div class="f-lbl">GMD Fase 2 (g/dia)</div><input id="v2_g2" type="number" min="1" step="1"><div class="f-underline"></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. Arrendamento V2 -->
-  <div class="sc" id="c2s2">
-    <div class="sc-hd" onclick="tog('c2s2')">
-      <div class="sc-num">02</div><div class="sc-divider"></div>
-      <div class="sc-ttl">Custos de Arrendamento</div><div class="sc-chv">▼</div>
-    </div>
-    <div class="sc-body">
-      <div class="fg fg2">
-        <div class="f"><div class="f-lbl">Valor Mensal p/ Cabeça (R$)</div><input id="v2_arr" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3. Mão de Obra V2 -->
-  <div class="sc" id="c2s3">
-    <div class="sc-hd" onclick="tog('c2s3')">
-      <div class="sc-num">03</div><div class="sc-divider"></div>
-      <div class="sc-ttl">Custos de Mão de Obra</div><div class="sc-chv">▼</div>
-    </div>
-    <div class="sc-body">
-      <div class="fg fg2">
-        <div class="f"><div class="f-lbl">Salários e Encargos (R$/funcionário)</div><input id="v2_sal" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Total mensal incluindo INSS, FGTS e demais encargos.</div></div>
-        <div class="f"><div class="f-lbl">Qtd. de Funcionários</div><input id="v2_nf" type="number" min="0"><div class="f-underline"></div><div class="f-hint">Use 0 se não houver mão de obra contratada.</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. Supl Fase 1 V2 -->
-  <div class="sc" id="c2s4">
-    <div class="sc-hd" onclick="tog('c2s4')">
-      <div class="sc-num">04</div><div class="sc-divider"></div>
-      <div class="sc-ttl">Suplementação Fase 1 — Proteinado</div><div class="sc-chv">▼</div>
-    </div>
-    <div class="sc-body">
-      <div class="fg fg3">
-        <div class="f"><div class="f-lbl">Kg p/ Saco</div><input id="v2_kg1" type="number" min="1" step="0.5"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Valor do Saco (R$)</div><input id="v2_vl1" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Fornecimento (% do peso vivo/dia)</div><input id="v2_p1" type="number" min="0.01" step="0.01"><div class="f-underline"></div><div class="f-hint">Recria: padrão 0,1%</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4.1 Supl Fase 2 V2 -->
-  <div class="sc" id="c2s41">
-    <div class="sc-hd" onclick="tog('c2s41')">
-      <div class="sc-num" style="color:var(--amber)">4.1</div><div class="sc-divider"></div>
-      <div class="sc-ttl">Suplementação Fase 2 — Proteico Energético</div><div class="sc-chv">▼</div>
-    </div>
-    <div class="sc-body">
-      <div class="fg fg3">
-        <div class="f"><div class="f-lbl">Kg p/ Saco</div><input id="v2_kg2" type="number" min="1" step="0.5"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Valor do Saco (R$)</div><input id="v2_vl2" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Fornecimento (% do peso vivo/dia)</div><input id="v2_p2" type="number" min="0.01" step="0.01"><div class="f-underline"></div><div class="f-hint">Engorda: 0,3% a 1%</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5. Outras V2 -->
-  <div class="sc" id="c2s5">
-    <div class="sc-hd" onclick="tog('c2s5')">
-      <div class="sc-num">05</div><div class="sc-divider"></div>
-      <div class="sc-ttl">Outras Despesas</div><div class="sc-chv">▼</div>
-    </div>
-    <div class="sc-body">
-      <div class="fg fg2">
-        <div class="f"><div class="f-lbl">Valor Médio p/ Cabeça / Mês (R$)</div><input id="v2_out" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Veterinário, combustíveis, manutenção.</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 6. Venda V2 -->
-  <div class="sc" id="c2s6">
-    <div class="sc-hd" onclick="tog('c2s6')">
-      <div class="sc-num">06</div><div class="sc-divider"></div>
-      <div class="sc-ttl">Venda do Rebanho</div><div class="sc-chv">▼</div>
-    </div>
-    <div class="sc-body">
-      <div class="fg fg3">
-        <div class="f"><div class="f-lbl">Valor da Arroba (R$/@)</div><input id="v2_arb" type="number" min="0" step="1" oninput="updArb2()"><div class="f-underline"></div></div>
-        <div class="f"><div class="f-lbl">Rendimento de Carcaça (%)</div><input id="v2_rend" type="number" min="30" max="70" step="0.1" oninput="updArb2()"><div class="f-underline"></div><div class="f-hint">Padrão Nelore pastagem: 50,5%. Uma @ = 15 kg de carcaça.</div></div>
-        <div class="f"><div class="f-lbl">Arrobas / Animal (calculado)</div><div class="f-calc" id="v2_ac">—</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="btn-wrap">
-    <button class="btn btn-a" onclick="calcV2()"><span class="btn-icon">⚡</span> Calcular Resultados</button>
-  </div>
-
-  <div class="res-box" id="v2-res">
-    <div class="kpi-grid" id="v2-kpis"></div>
-    <div class="sec-lbl">Custos Totais</div>
-    <div class="tbl-wrap"><table class="bt" id="v2-tbl"></table></div>
-    <div class="sec-lbl">Participação nos Custos</div>
-    <div class="bars-wrap" id="v2-bars"></div>
-  </div>
-</div>
-
-<!-- ════════════════════════════
-     COMPARATIVO
-════════════════════════════ -->
-<div class="ps" id="s3">
+<!-- ══════════════════════════════════════
+     PÁGINA 2 — COMPARATIVO
+══════════════════════════════════════ -->
+<div class="page" id="p-comp">
   <div class="pt">
     <div class="pt-left">
       <div class="pt-eyebrow">Análise</div>
       <div class="pt-title">Comparativo de Cenários</div>
     </div>
   </div>
-  <div id="comp-empty" style="text-align:center;padding:56px 24px;color:var(--slate);font-size:.88rem">
-    Calcule ao menos um cenário para ver o comparativo.
+  <div id="comp-empty" style="text-align:center;padding:64px 24px;color:var(--slate);font-size:.88rem">
+    Preencha e calcule a simulação para ver o comparativo aqui.
   </div>
   <div id="comp-content" style="display:none">
     <div class="comp-grid" id="comp-cols"></div>
@@ -1203,10 +1195,10 @@ footer{
   </div>
 </div>
 
-<!-- ════════════════════════════
-     PONTO DE EQUILÍBRIO
-════════════════════════════ -->
-<div class="ps" id="s4">
+<!-- ══════════════════════════════════════
+     PÁGINA 3 — PONTO DE EQUILÍBRIO
+══════════════════════════════════════ -->
+<div class="page" id="p-pe">
   <div class="pt">
     <div class="pt-left">
       <div class="pt-eyebrow">Simulador</div>
@@ -1218,11 +1210,13 @@ footer{
   <div class="sc" id="pes1">
     <div class="sc-hd" onclick="tog('pes1')">
       <div class="sc-num" style="color:var(--green)">IN</div><div class="sc-divider"></div>
-      <div class="sc-ttl">Parâmetros Herdados do Cenário 1</div><div class="sc-chv">▼</div>
+      <div class="sc-ttl">Dados Herdados da Simulação</div><div class="sc-chv">▼</div>
     </div>
     <div class="sc-body">
       <div class="inh-grid" id="pe-inh">
-        <div style="grid-column:1/-1;font-size:.83rem;color:var(--slate);padding:12px">Calcule o Cenário 1 para habilitar este módulo.</div>
+        <div style="grid-column:1/-1;font-size:.83rem;color:var(--slate);padding:8px">
+          Calcule a simulação primeiro para habilitar este módulo.
+        </div>
       </div>
     </div>
   </div>
@@ -1234,8 +1228,16 @@ footer{
     </div>
     <div class="sc-body">
       <div class="fg fg2">
-        <div class="f"><div class="f-lbl">Valor da Arroba (R$/@)</div><input id="pe_arb" type="number" min="1" step="1"><div class="f-underline"></div><div class="f-hint">Simule diferentes preços sem alterar o Cenário 1.</div></div>
-        <div class="f"><div class="f-lbl">Rendimento de Carcaça (%)</div><input id="pe_rend" type="number" min="30" max="70" step="0.1"><div class="f-underline"></div><div class="f-hint">% do peso vivo convertido em carcaça. Uma @ = 15 kg.</div></div>
+        <div class="f">
+          <div class="f-lbl">Valor da Arroba (R$/@)</div>
+          <input id="pe_arb" type="number" min="1" step="1">
+          <div class="f-hint">Simule diferentes preços sem alterar a simulação principal.</div>
+        </div>
+        <div class="f">
+          <div class="f-lbl">Rendimento de Carcaça (%)</div>
+          <input id="pe_rend" type="number" min="30" max="70" step="0.1">
+          <div class="f-hint">% do peso vivo convertido em carcaça. Uma @ = 15 kg.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1250,7 +1252,7 @@ footer{
     <div class="chart-wrap">
       <div class="chart-legend">
         <div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Custo Acumulado / Animal</div>
-        <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>Receita de Venda Projetada / Animal</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>Receita Projetada / Animal</div>
         <div class="leg-item"><div class="leg-dash" style="border-color:var(--amber)"></div>Ponto de Equilíbrio</div>
       </div>
       <canvas id="pe-chart"></canvas>
@@ -1260,10 +1262,10 @@ footer{
   </div>
 </div>
 
-<!-- ════════════════════════════
-     GLOSSÁRIO
-════════════════════════════ -->
-<div class="ps" id="s5">
+<!-- ══════════════════════════════════════
+     PÁGINA 4 — GLOSSÁRIO
+══════════════════════════════════════ -->
+<div class="page" id="p-ref">
   <div class="pt">
     <div class="pt-left">
       <div class="pt-eyebrow">Referência</div>
@@ -1279,14 +1281,14 @@ footer{
         <tr><td class="td-name">Peso Inicial</td><td>Peso médio de cada animal na entrada do lote</td><td>kg/cab.</td><td>180</td></tr>
         <tr><td class="td-name">Peso Final / Venda</td><td>Peso médio alvo no momento da venda ao frigorífico</td><td>kg/cab.</td><td>390</td></tr>
         <tr><td class="td-name">Valor de Aquisição</td><td>Valor total pago por cabeça na compra do lote</td><td>R$/cab.</td><td>1.800,00</td></tr>
-        <tr><td class="td-name">GMD</td><td>Ganho Médio Diário — quanto o animal engorda por dia</td><td>g/dia</td><td>583</td></tr>
+        <tr><td class="td-name">GMD</td><td>Ganho Médio Diário — quanto o animal engorda por dia. Informe em g/dia.</td><td>g/dia</td><td>583</td></tr>
+        <tr><td class="td-name">Custo Mensal do Gado</td><td>Custo fixo mensal com sanidade, vacinas obrigatórias e sal mineral</td><td>R$/cab./mês</td><td>15,00</td></tr>
         <tr><td class="td-name">Valor Mensal p/ Cabeça</td><td>Custo da terra pago mensalmente por animal ao arrendatário</td><td>R$/cab./mês</td><td>55,00</td></tr>
         <tr><td class="td-name">Salários e Encargos</td><td>Custo mensal total de um funcionário com INSS, FGTS e encargos</td><td>R$/func.</td><td>2.000,00</td></tr>
         <tr><td class="td-name">Kg p/ Saco</td><td>Quantidade de suplemento por embalagem</td><td>kg</td><td>30</td></tr>
         <tr><td class="td-name">Valor do Saco</td><td>Preço pago por saco de suplemento</td><td>R$</td><td>52,50</td></tr>
-        <tr><td class="td-name">Fornecimento (%)</td><td>Percentual do peso vivo do animal oferecido em suplemento por dia. Ex.: 0,1% de 285 kg = 285 g/dia.</td><td>%/dia</td><td>0,1</td></tr>
+        <tr><td class="td-name">Consumo Diário do Suplemento (%)</td><td>Percentual do peso vivo do animal oferecido como suplemento por dia. Um animal de 285 kg com 0,1% consome 285 g de suplemento por dia.</td><td>%/dia</td><td>0,1</td></tr>
         <tr><td class="td-name">Outras Despesas</td><td>Média mensal por cabeça com veterinário, combustíveis e manutenção</td><td>R$/cab./mês</td><td>3,00</td></tr>
-        <tr><td class="td-name">Custo Mensal do Gado</td><td>Custo fixo mensal com sanidade, vacinas obrigatórias e sal mineral</td><td>R$/cab./mês</td><td>15,00</td></tr>
         <tr><td class="td-name">Valor da Arroba</td><td>Preço de mercado de uma arroba no momento da venda ao frigorífico</td><td>R$/@</td><td>300,00</td></tr>
         <tr><td class="td-name">Rendimento de Carcaça</td><td>Percentual do peso vivo convertido em carcaça após o abate. Padrão Nelore pastagem: 50,5%. Uma arroba equivale a 15 kg de carcaça.</td><td>%</td><td>50,5</td></tr>
       </tbody>
@@ -1297,17 +1299,16 @@ footer{
     <table class="bt">
       <thead><tr><th>Indicador</th><th>Fórmula</th></tr></thead>
       <tbody>
-        <tr><td class="td-name">Nº Meses p/ Vender</td><td style="font-family:var(--fd)">(Peso Final − Peso Inicial) ÷ (GMD g/dia ÷ 1000) ÷ 30</td></tr>
+        <tr><td class="td-name">Nº Meses p/ Vender</td><td style="font-family:var(--fd)">(Peso Final − Peso Inicial) ÷ (GMD ÷ 1000) ÷ 30</td></tr>
         <tr><td class="td-name">Custo Reposição</td><td style="font-family:var(--fd)">Qtd. × Valor de Aquisição/cab.</td></tr>
         <tr><td class="td-name">Custo Arrendamento Total</td><td style="font-family:var(--fd)">R$/cab./mês × Qtd. × Nº Meses</td></tr>
-        <tr><td class="td-name">Consumo Diário (kg/cab.)</td><td style="font-family:var(--fd)">Peso Médio × (Fornecimento % ÷ 100)</td></tr>
+        <tr><td class="td-name">Consumo Diário (kg/cab.)</td><td style="font-family:var(--fd)">Peso Médio do Lote × (% Consumo ÷ 100)</td></tr>
         <tr><td class="td-name">Custo Suplementação Total</td><td style="font-family:var(--fd)">Consumo Diário × R$/kg × (Nº Meses × 30) × Qtd.</td></tr>
         <tr><td class="td-name">Arrobas / Animal</td><td style="font-family:var(--fd)">Peso Final × (Rendimento % ÷ 100) ÷ 15</td></tr>
         <tr><td class="td-name">Venda do Rebanho</td><td style="font-family:var(--fd)">Arrobas/Animal × Qtd. × Valor da Arroba</td></tr>
         <tr><td class="td-name">Resultado Total</td><td style="font-family:var(--fd)">Venda do Rebanho − Total Despesas</td></tr>
         <tr><td class="td-name">Margem %</td><td style="font-family:var(--fd)">Resultado Total ÷ Venda do Rebanho × 100</td></tr>
         <tr><td class="td-name">Resultado por Animal</td><td style="font-family:var(--fd)">Resultado Total ÷ Qtd. de Cabeças</td></tr>
-        <tr><td class="td-name">Custo de Produção / Animal</td><td style="font-family:var(--fd)">Total Despesas ÷ Qtd. de Cabeças</td></tr>
       </tbody>
     </table>
   </div>
@@ -1317,109 +1318,76 @@ footer{
 <footer></footer>
 
 <script>
-/* ── UTILS ── */
 const fmt=(v,d=2)=>isNaN(v)||!isFinite(v)?'—':v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
 const R=v=>'R$ '+fmt(v,2);
 const g=id=>parseFloat(document.getElementById(id)?.value)||0;
-let D1=null,D2=null,peChart=null;
+let D1=null, peChart=null;
+
+// ── NAVEGAÇÃO POR PÁGINAS ──
+function showPage(pageId, linkEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#main-nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  if(linkEl) linkEl.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
 
 function tog(id){document.getElementById(id).classList.toggle('closed')}
 
-/* ── RESET: esconde resultados ao editar qualquer campo ── */
+// preview de arrobas ao vivo
+function updArb1(){
+  const pf=g('v1_pf'), rend=g('v1_rend')/100;
+  const a = pf*rend/15;
+  const el = document.getElementById('v1_ac');
+  if(el) el.textContent = a>0 ? fmt(a,2)+' @' : '—';
+}
+
+// helper
+function setEl(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+
+// ── RESET ao editar ──
 function resetV1(){
   D1=null;
-  // strips
-  const s1=document.getElementById('v1_strip');if(s1)s1.style.display='none';
-  const ss1=document.getElementById('v1_supstrip');if(ss1)ss1.style.display='none';
-  const ac1=document.getElementById('v1_ac');if(ac1)ac1.textContent='—';
-  const rb1=document.getElementById('v1-res');if(rb1)rb1.style.display='none';
-  document.getElementById('pe-res').style.display='none';
-  document.getElementById('pe-inh').innerHTML='<div style="grid-column:1/-1;font-size:.83rem;color:var(--slate);padding:12px">Calcule o Cenário 1 para habilitar este módulo.</div>';
+  ['v1_strip','v1_supstrip'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  setEl('v1_ac','—');
+  const res=document.getElementById('v1-res');if(res)res.style.display='none';
+  // reset PE
+  const peres=document.getElementById('pe-res');if(peres)peres.style.display='none';
+  setEl('pe-inh','<div style="grid-column:1/-1;font-size:.83rem;color:var(--slate-l);padding:8px">Calcule a simulação primeiro para habilitar este módulo.</div>');
   if(peChart){peChart.destroy();peChart=null;}
-  refreshComp();
-  return; // skip old clearIds
-  const clearIds=['v1c_ganho','v1c_meses','v1c_arr','v1c_mao','v1c_vlkg','v1c_cd','v1c_cdd',
-    'v1c_sup','v1c_out','v1c_cmg','v1_ac','v1c_receita','v1r_cprod','v1r_total','v1r_marg','v1r_animal'];
-  clearIds.forEach(id=>setEl(id,'—'));
-  const dg=document.getElementById('v1c_desp_grid');
-  if(dg) dg.innerHTML='<div class="rdg-hd">Item</div><div class="rdg-hd right">Custo Total (R$)</div><div class="rdg-hd right">Custo / Mês (R$)</div>';
-  const rrd=document.getElementById('v1-resultado');if(rrd) rrd.style.display='none';
-  const rb=document.getElementById('v1-res');if(rb) rb.style.display='none';
-  document.getElementById('pe-res').style.display='none';
-  document.getElementById('pe-inh').innerHTML=
-    '<div style="grid-column:1/-1;font-size:.83rem;color:var(--slate);padding:12px">Calcule o Cenário 1 para habilitar este módulo.</div>';
-  if(peChart){peChart.destroy();peChart=null;}
-  refreshComp();
-}
-function resetV2(){
-  D2=null;
-  const ac2=document.getElementById('v2_ac');if(ac2)ac2.textContent='—';
-  const rb2=document.getElementById('v2-res');if(rb2)rb2.style.display='none';
-  refreshComp();
-  return;
-  const clearIds2=['v2c_g1','v2c_m1','v2c_m2','v2c_mtot','v2c_arr','v2c_mao',
-    'v2c_s1','v2c_s2','v2c_out','v2c_cmg','v2_ac','v2c_receita','v2r_cprod','v2r_total','v2r_marg','v2r_animal'];
-  clearIds2.forEach(id=>setEl(id,'—'));
-  const dg2=document.getElementById('v2c_desp_grid');
-  if(dg2) dg2.innerHTML='<div class="rdg-hd">Item</div><div class="rdg-hd right">Custo Total (R$)</div><div class="rdg-hd right">Custo / Mês (R$)</div>';
-  const rrd2=document.getElementById('v2-resultado');if(rrd2) rrd2.style.display='none';
-  const rb2=document.getElementById('v2-res');if(rb2) rb2.style.display='none';
   refreshComp();
 }
 function resetPE(){
-  document.getElementById('pe-res').style.display='none';
+  const peres=document.getElementById('pe-res');if(peres)peres.style.display='none';
   if(peChart){peChart.destroy();peChart=null;}
 }
 
-/* Observar todos os inputs do C1 */
-document.querySelectorAll(
-  '#v1_desc,#v1_qtd,#v1_pi,#v1_pf,#v1_gmd,#v1_aq,#v1_cmg,#v1_arr,#v1_sal,#v1_nf,#v1_kgsc,#v1_vls,#v1_pct,#v1_out,#v1_arb,#v1_rend'
-).forEach(el=>{if(el)el.addEventListener('input',resetV1)});
+document.querySelectorAll('#v1_desc,#v1_qtd,#v1_pi,#v1_pf,#v1_gmd,#v1_aq,#v1_cmg,#v1_arr,#v1_sal,#v1_nf,#v1_kgsc,#v1_vls,#v1_pct,#v1_out,#v1_arb,#v1_rend')
+  .forEach(el=>{if(el)el.addEventListener('input',resetV1);});
+document.querySelectorAll('#pe_arb,#pe_rend')
+  .forEach(el=>{if(el)el.addEventListener('input',resetPE);});
 
-/* Observar todos os inputs do C2 */
-document.querySelectorAll(
-  '#v2_d1,#v2_qtd,#v2_pi,#v2_pf1,#v2_g1,#v2_aq,#v2_cmg,#v2_d2,#v2_pf2,#v2_g2,#v2_arr,#v2_sal,#v2_nf,#v2_kg1,#v2_vl1,#v2_p1,#v2_kg2,#v2_vl2,#v2_p2,#v2_out,#v2_arb,#v2_rend'
-).forEach(el=>el.addEventListener('input',resetV2));
-
-/* Observar inputs do PE */
-document.querySelectorAll('#pe_arb,#pe_rend').forEach(el=>el.addEventListener('input',resetPE));
-
-/* previews ao vivo */
-function updArb1(){
-  const pf=g('v1_pf'),rend=g('v1_rend')/100,a=pf*rend/15;
-  const el=document.getElementById('v1_ac');
-  if(el) el.textContent=a>0?fmt(a,2)+' @':'—';
-}
-function updArb2(){
-  const pf=g('v2_pf2'),rend=g('v2_rend')/100,a=pf*rend/15;
-  const el=document.getElementById('v2_ac');
-  if(el) el.textContent=a>0?fmt(a,2)+' @':'—';
-}
-
-/* helper: atualiza campo inline se existir */
-function setEl(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
-
-/* ── KPI RENDER ── */
+// ── KPIs ──
 function rKPIs(id,d){
   const pos=d.resultado>=0;
   document.getElementById(id).innerHTML=[
-    {l:'Receita Total',          v:R(d.receita),          c:'info'},
-    {l:'Total Despesas',         v:R(d.totalDesp),        c:''},
-    {l:'Resultado',              v:R(d.resultado),        c:pos?'pos':'neg'},
-    {l:'Margem',                 v:fmt(d.margem,2)+'%',   c:pos?'pos':'neg'},
-    {l:'Resultado / Animal',     v:R(d.resPorAnimal),     c:'hl'},
-    {l:'Prazo',                  v:fmt(d.meses,2)+' m',   c:''},
-    {l:'Custo de Produção/cab.', v:R(d.custoProd),        c:''},
+    {l:'Venda do Rebanho',      v:R(d.receita),         c:'info'},
+    {l:'Total Despesas',        v:R(d.totalDesp),       c:''},
+    {l:'Resultado Total',       v:R(d.resultado),       c:pos?'pos':'neg'},
+    {l:'Margem %',              v:fmt(d.margem,2)+'%',  c:pos?'pos':'neg'},
+    {l:'Resultado / Animal',    v:R(d.resPorAnimal),    c:'hl'},
+    {l:'Nº Meses p/ Vender',   v:fmt(d.meses,2)+' m',  c:''},
+    {l:'Custo Produção/Animal', v:R(d.custoProd),       c:''},
   ].map(k=>`<div class="kpi ${k.c}"><div class="kpi-lbl">${k.l}</div><div class="kpi-val">${k.v}</div></div>`).join('');
 }
 
-/* ── TABLE ── */
+// ── TABELA ──
 function rTable(id,rows,total,totMes){
-  const colors=['#2DD4BF','#F5A623','#60A5FA','#A78BFA','#F472B6','#34D399','#FB923C'];
+  const colors=['#22D3EE','#F59E0B','#60A5FA','#A78BFA','#34D399','#F472B6'];
   document.getElementById(id).innerHTML=
     `<thead><tr><th>Item de Custo</th><th class="tr">Total (R$)</th><th class="tm">Por Mês (R$)</th></tr></thead>
      <tbody>${rows.map((r,i)=>`<tr>
-       <td class="td-name"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${colors[i%colors.length]};margin-right:8px;vertical-align:middle"></span>${r.l}</td>
+       <td class="td-name"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${colors[i%colors.length]};margin-right:10px;vertical-align:middle"></span>${r.l}</td>
        <td class="tr">${R(r.t)}</td>
        <td class="tm">${r.m!==null?R(r.m):'—'}</td>
      </tr>`).join('')}</tbody>
@@ -1430,328 +1398,241 @@ function rTable(id,rows,total,totMes){
      </tr></tfoot>`;
 }
 
-/* ── BARS ── */
-const barColors=['#2DD4BF','#F5A623','#60A5FA','#A78BFA','#F472B6','#34D399','#FB923C'];
+// ── BARRAS ──
+const barColors=['#22D3EE','#F59E0B','#60A5FA','#A78BFA','#34D399','#F472B6'];
 function rBars(id,rows,total){
   document.getElementById(id).innerHTML=rows.filter(r=>r.t>0).map((r,i)=>{
-    const p=total>0?r.t/total*100:0,ci=i%barColors.length;
+    const p=total>0?r.t/total*100:0, c=barColors[i%barColors.length];
     return `<div class="bar-row">
       <div class="bar-lbl">${r.l}</div>
-      <div class="bar-bg"><div class="bar-fill" style="width:${p}%;background:${barColors[ci]}"></div></div>
-      <div class="bar-pct" style="color:${barColors[ci]}">${fmt(p,1)}%</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:${p}%;background:${c}"></div></div>
+      <div class="bar-pct" style="color:${c}">${fmt(p,1)}%</div>
     </div>`;
   }).join('');
 }
 
-/* ── CALC V1 ── */
+// ── CALC V1 ──
 function calcV1(){
-  const qtd=g('v1_qtd'),pi=g('v1_pi'),pf=g('v1_pf'),gmd_g=g('v1_gmd'); // gmd em g/dia
-  const gmd=gmd_g/1000; // converter para kg/dia
-  const aq=g('v1_aq'),cmg=g('v1_cmg');
-  const arr=g('v1_arr'),sal=g('v1_sal'),nf=g('v1_nf');
-  const kgsc=g('v1_kgsc'),vls=g('v1_vls'),pct=g('v1_pct')/100;
-  const out=g('v1_out'),arb=g('v1_arb'),rend=g('v1_rend')/100;
+  const qtd  = g('v1_qtd');
+  const pi   = g('v1_pi');
+  const pf   = g('v1_pf');
+  const gmd  = g('v1_gmd') / 1000;   // g/dia → kg/dia
+  const aq   = g('v1_aq');
+  const cmg  = g('v1_cmg');
+  const arr  = g('v1_arr');
+  const sal  = g('v1_sal');
+  const nf   = g('v1_nf');
+  const kgsc = g('v1_kgsc');
+  const vls  = g('v1_vls');
+  const pct  = g('v1_pct') / 100;    // % → decimal
+  const out  = g('v1_out');
+  const arb  = g('v1_arb');
+  const rend = g('v1_rend') / 100;   // % → decimal
 
-  const meses=gmd>0?(pf-pi)/gmd/30:0,dias=meses*30;
-  const vlkg=kgsc>0?vls/kgsc:0,pm=(pi+pf)/2,cd=pm*pct,cdd=cd*vlkg;
-  const rAq=qtd*aq,rCmg=cmg*qtd*meses,rArr=arr*qtd*meses;
-  const rMao=sal*nf*meses,rSup=cd*vlkg*dias*qtd,rOut=out*qtd*meses;
-  const total=rAq+rCmg+rArr+rMao+rSup+rOut;
-  const arrobas=pf*rend/15;
-  const receita=arrobas*qtd*arb,res=receita-total,marg=receita>0?res/receita*100:0;
-  const totMes=rArr/meses+(rMao/meses||0)+cdd*qtd*30+cmg*qtd+out*qtd;
+  if(qtd<=0||pi<=0||pf<=0||gmd<=0){
+    alert('Preencha ao menos: Qtd. de Cabeças, Peso Inicial, Peso Final e GMD.');
+    return;
+  }
 
-  // strips informativos
+  const meses  = (pf - pi) / gmd / 30;
+  const dias   = meses * 30;
+  const vlkg   = kgsc > 0 ? vls / kgsc : 0;
+  const pm     = (pi + pf) / 2;
+  const cd     = pm * pct;
+  const cdd    = cd * vlkg;
+  const rAq    = qtd * aq;
+  const rCmg   = cmg * qtd * meses;
+  const rArr   = arr * qtd * meses;
+  const rMao   = sal * nf * meses;
+  const rSup   = cd * vlkg * dias * qtd;
+  const rOut   = out * qtd * meses;
+  const total  = rAq + rCmg + rArr + rMao + rSup + rOut;
+  const totMes = (rCmg + rArr + rMao + rSup + rOut) / (meses||1);
+
+  const arrobas = pf * rend / 15;
+  const receita = arrobas * qtd * arb;
+  const res     = receita - total;
+  const marg    = receita > 0 ? res / receita * 100 : 0;
+
+  // strips
+  setEl('v1_ac', fmt(arrobas,2)+' @');
   const s1=document.getElementById('v1_strip');if(s1)s1.style.display='flex';
-  setEl('v1s_gp',fmt(pf-pi,0)+' kg');
-  setEl('v1s_m',fmt(meses,2)+' meses');
-  setEl('v1s_r',R(rAq));
-  setEl('v1s_a',fmt(arrobas,2)+' @');
+  setEl('v1s_gp', fmt(pf-pi,0)+' kg');
+  setEl('v1s_m',  fmt(meses,2)+' meses');
+  setEl('v1s_r',  R(rAq));
+  setEl('v1s_a',  fmt(arrobas,2)+' @');
   const ss1=document.getElementById('v1_supstrip');if(ss1)ss1.style.display='flex';
-  setEl('v1s_vk',R(vlkg)+'/kg');
-  setEl('v1s_pm',fmt(pm,1)+' kg');
-  setEl('v1s_cd',fmt(cd,3)+' kg/dia');
-  setEl('v1s_cdd',R(cdd)+'/dia');
-  setEl('v1_ac',fmt(arrobas,2)+' @');
-  // Campos inline do novo layout — ignorados (não existem)
-  setEl('v1c_ganho',fmt(pf-pi,0)+' kg');
-  setEl('v1c_meses',fmt(meses,2)+' meses');
-  setEl('v1c_arr',R(rArr));
-  setEl('v1c_mao',R(rMao));
-  setEl('v1c_vlkg',R(vlkg)+'/kg');
-  setEl('v1c_cd',fmt(cd,3)+' kg');
-  setEl('v1c_cdd',R(cdd));
-  setEl('v1c_sup',R(rSup));
-  setEl('v1c_out',R(rOut));
-  setEl('v1c_cmg',R(rCmg));
-  setEl('v1_ac',fmt(arrobas,2)+' @');
-  setEl('v1c_receita',R(receita));
+  setEl('v1s_vk',  R(vlkg)+'/kg');
+  setEl('v1s_pm',  fmt(pm,1)+' kg');
+  setEl('v1s_cd',  fmt(cd,3)+' kg/dia');
+  setEl('v1s_cdd', R(cdd)+'/dia');
 
-  // Tabela de despesas no Resumo Geral
-  const rows=[
-    {l:'Custos de Reposição',      t:rAq,  m:null},
-    {l:'Custo Mensal do Gado',     t:rCmg, m:cmg*qtd},
-    {l:'Custos de Arrendamento',   t:rArr, m:arr*qtd},
-    {l:'Custos de Mão de Obra',    t:rMao, m:sal*nf},
-    {l:'Custos de Suplementação',  t:rSup, m:cdd*qtd*30},
-    {l:'Outras Despesas',          t:rOut, m:out*qtd},
+  const rows = [
+    {l:'Custos de Reposição',     t:rAq,  m:null},
+    {l:'Custo Mensal do Gado',    t:rCmg, m:cmg*qtd},
+    {l:'Custos de Arrendamento',  t:rArr, m:arr*qtd},
+    {l:'Custos de Mão de Obra',   t:rMao, m:sal*nf},
+    {l:'Custos de Suplementação', t:rSup, m:cdd*qtd*30},
+    {l:'Outras Despesas',         t:rOut, m:out*qtd},
   ];
-  const colors=['#22D3EE','#F59E0B','#60A5FA','#A78BFA','#34D399','#F472B6'];
-  const dg=document.getElementById('v1c_desp_grid');
-  if(dg){
-    dg.innerHTML='<div class="rdg-hd">Item</div><div class="rdg-hd right">Custo Total (R$)</div><div class="rdg-hd right">Custo / Mês (R$)</div>'+
-    rows.map((r,i)=>`
-      <div class="rdg-item"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${colors[i]};margin-right:8px;flex-shrink:0"></span>${r.l}</div>
-      <div class="rdg-val">${R(r.t)}</div>
-      <div class="rdg-val">${r.m!==null?R(r.m):'—'}</div>`).join('')+
-    `<div class="rdg-item rdg-total"><strong>Total Despesas</strong></div>
-     <div class="rdg-val rdg-total"><strong>${R(total)}</strong></div>
-     <div class="rdg-val rdg-total"><strong>${R(totMes)}</strong></div>`;
-  }
 
-  // Resultado
-  const pos=res>=0;
-  const rrd=document.getElementById('v1-resultado');
-  if(rrd){
-    rrd.style.display='block';
-    setEl('v1r_cprod',R(qtd>0?total/qtd:0));
-    const rt=document.getElementById('v1r_total');
-    if(rt){rt.textContent=R(res);rt.className='rr-val result-val '+(pos?'pos':'neg');}
-    const rm=document.getElementById('v1r_marg');
-    if(rm){rm.textContent=fmt(marg,2)+'%';rm.className='rr-val result-val '+(pos?'pos':'neg');}
-    setEl('v1r_animal',R(qtd>0?res/qtd:0));
-  }
-
-  D1={qtd,meses,receita,totalDesp:total,resultado:res,margem:marg,
-    resPorAnimal:qtd>0?res/qtd:0,custoProd:qtd>0?total/qtd:0,
-    arroba:arb,rend,
+  D1 = {
+    qtd, meses, receita, totalDesp:total, resultado:res, margem:marg,
+    resPorAnimal: qtd>0 ? res/qtd : 0,
+    custoProd:    qtd>0 ? total/qtd : 0,
+    arroba:arb, rend,
     params:{qtd,pi,pf,gmd,aq,cmg,arr,sal,nf,vlkg,pctforn:pct,out},
-    rows};
+    rows
+  };
 
-  rBars('v1-bars',D1.rows,total);
-  const pe_arb_el=document.getElementById('pe_arb');
-  const pe_rend_el=document.getElementById('pe_rend');
-  if(pe_arb_el) pe_arb_el.value=arb;
-  if(pe_rend_el) pe_rend_el.value=g('v1_rend');
+  rKPIs('v1-kpis', D1);
+  rTable('v1-tbl', rows, total, totMes);
+  rBars('v1-bars', rows, total);
+
+  // pré-preencher PE
+  const pe_arb=document.getElementById('pe_arb');
+  const pe_rend=document.getElementById('pe_rend');
+  if(pe_arb&&!pe_arb.value) pe_arb.value=arb;
+  if(pe_rend&&!pe_rend.value) pe_rend.value=g('v1_rend');
+
   const rb=document.getElementById('v1-res');
   rb.style.display='block';
-  document.getElementById('v1-resultado')?.scrollIntoView({behavior:'smooth',block:'nearest'});
+  rb.scrollIntoView({behavior:'smooth',block:'start'});
   refreshComp();
 }
 
-/* ── CALC V2 ── */
-function calcV2(){
-  const qtd=g('v2_qtd'),pi=g('v2_pi'),pf1=g('v2_pf1'),pf2=g('v2_pf2');
-  const gmd1_g=g('v2_g1'),gmd2_g=g('v2_g2'); // g/dia
-  const gmd1=gmd1_g/1000,gmd2=gmd2_g/1000;   // kg/dia
-  const aq=g('v2_aq'),cmg=g('v2_cmg');
-  const arr=g('v2_arr'),sal=g('v2_sal'),nf=g('v2_nf');
-  const kg1=g('v2_kg1'),vl1=g('v2_vl1'),pct1=g('v2_p1')/100;
-  const kg2=g('v2_kg2'),vl2=g('v2_vl2'),pct2=g('v2_p2')/100;
-  const out=g('v2_out'),arb=g('v2_arb'),rend=g('v2_rend')/100;
-
-  const m1=gmd1>0?(pf1-pi)/gmd1/30:0,m2=gmd2>0?(pf2-pf1)/gmd2/30:0,meses=m1+m2;
-  const vk1=kg1>0?vl1/kg1:0,vk2=kg2>0?vl2/kg2:0;
-  const pm1=(pi+pf1)/2,pm2=(pf1+pf2)/2,cd1=pm1*pct1,cd2=pm2*pct2;
-  const rAq=qtd*aq,rCmg=cmg*qtd*meses,rArr=arr*qtd*meses;
-  const rMao=sal*nf*meses,rS1=cd1*vk1*(m1*30)*qtd,rS2=cd2*vk2*(m2*30)*qtd;
-  const rOut=out*qtd*meses,total=rAq+rCmg+rArr+rMao+rS1+rS2+rOut;
-  const arrobas=pf2*rend/15,receita=arrobas*qtd*arb;
-  const res=receita-total,marg=receita>0?res/receita*100:0;
-
-  setEl('v2_ac',fmt(arrobas,2)+' @');
-  setEl('v2c_g1',fmt(pf1-pi,0)+' kg');
-  setEl('v2c_m1',fmt(m1,2)+' meses');
-  setEl('v2c_m2',fmt(m2,2)+' meses');
-  setEl('v2c_mtot',fmt(meses,2)+' meses');
-  setEl('v2c_arr',R(rArr));
-  setEl('v2c_mao',R(rMao));
-  setEl('v2c_s1',R(rS1));
-  setEl('v2c_s2',R(rS2));
-  setEl('v2c_out',R(rOut));
-  setEl('v2c_cmg',R(rCmg));
-  setEl('v2c_receita',R(receita));
-
-  const rows2=[
-    {l:'Custos de Reposição',           t:rAq,  m:null},
-    {l:'Custo Mensal do Gado',          t:rCmg, m:cmg*qtd},
-    {l:'Custos de Arrendamento',        t:rArr, m:arr*qtd},
-    {l:'Custos de Mão de Obra',         t:rMao, m:sal*nf},
-    {l:'Supl. Fase 1 — Proteinado',     t:rS1,  m:cd1*vk1*qtd*30},
-    {l:'Supl. Fase 2 — Prot. Energético',t:rS2, m:cd2*vk2*qtd*30},
-    {l:'Outras Despesas',               t:rOut, m:out*qtd},
-  ];
-  const colors2=['#22D3EE','#F59E0B','#60A5FA','#A78BFA','#34D399','#F472B6','#FB923C'];
-  const dg2=document.getElementById('v2c_desp_grid');
-  if(dg2){
-    const totMes2=rArr/meses+(rMao/meses||0)+cd1*vk1*qtd*30+cd2*vk2*qtd*30+cmg*qtd+out*qtd;
-    dg2.innerHTML='<div class="rdg-hd">Item</div><div class="rdg-hd right">Custo Total (R$)</div><div class="rdg-hd right">Custo / Mês (R$)</div>'+
-    rows2.map((r,i)=>`
-      <div class="rdg-item"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${colors2[i]};margin-right:8px;flex-shrink:0"></span>${r.l}</div>
-      <div class="rdg-val">${R(r.t)}</div>
-      <div class="rdg-val">${r.m!==null?R(r.m):'—'}</div>`).join('')+
-    `<div class="rdg-item rdg-total"><strong>Total Despesas</strong></div>
-     <div class="rdg-val rdg-total"><strong>${R(total)}</strong></div>
-     <div class="rdg-val rdg-total"><strong>${R(totMes2)}</strong></div>`;
-  }
-  const pos2=res>=0;
-  const rrd2=document.getElementById('v2-resultado');
-  if(rrd2){
-    rrd2.style.display='block';
-    setEl('v2r_cprod',R(qtd>0?total/qtd:0));
-    const rt2=document.getElementById('v2r_total');
-    if(rt2){rt2.textContent=R(res);rt2.className='rr-val result-val '+(pos2?'pos':'neg');}
-    const rm2=document.getElementById('v2r_marg');
-    if(rm2){rm2.textContent=fmt(marg,2)+'%';rm2.className='rr-val result-val '+(pos2?'pos':'neg');}
-    setEl('v2r_animal',R(qtd>0?res/qtd:0));
-  }
-  D2={qtd,meses,receita,totalDesp:total,resultado:res,margem:marg,
-    resPorAnimal:qtd>0?res/qtd:0,custoProd:qtd>0?total/qtd:0,rows:rows2};
-  rBars('v2-bars',D2.rows,total);
-  const rb=document.getElementById('v2-res');
-  rb.style.display='block';
-  document.getElementById('v2-resultado')?.scrollIntoView({behavior:'smooth',block:'nearest'});
-  refreshComp();
-}
-
-/* ── COMPARATIVO ── */
+// ── COMPARATIVO ──
 function refreshComp(){
-  const em=document.getElementById('comp-empty'),co=document.getElementById('comp-content');
-  if(!D1&&!D2){em.style.display='block';co.style.display='none';return;}
-  em.style.display='none';co.style.display='block';
+  const em=document.getElementById('comp-empty');
+  const co=document.getElementById('comp-content');
+  if(!D1){
+    if(em)em.style.display='block';
+    if(co)co.style.display='none';
+    return;
+  }
+  if(em)em.style.display='none';
+  if(co)co.style.display='block';
+
   const metrics=[
-    {k:'receita',       l:'Receita Total'},
-    {k:'totalDesp',     l:'Total Despesas'},
-    {k:'resultado',     l:'Resultado'},
-    {k:'margem',        l:'Margem',pct:true},
-    {k:'resPorAnimal',  l:'Resultado / Animal'},
-    {k:'meses',         l:'Prazo (meses)',num:true},
-    {k:'custoProd',     l:'Custo de Prod. / Animal'},
+    {k:'receita',      l:'Venda do Rebanho'},
+    {k:'totalDesp',    l:'Total Despesas'},
+    {k:'resultado',    l:'Resultado'},
+    {k:'margem',       l:'Margem %', pct:true},
+    {k:'resPorAnimal', l:'Resultado / Animal'},
+    {k:'meses',        l:'Nº Meses p/ Vender', num:true},
+    {k:'custoProd',    l:'Custo Produção/Animal'},
   ];
-  const cols=[];
-  if(D1)cols.push({d:D1,lbl:'Cenário 1',sub:'Uma Suplementação',dot:'var(--teal)',yn:false});
-  if(D2)cols.push({d:D2,lbl:'Cenário 2',sub:'Duas Suplementações',dot:'var(--amber)',yn:true});
-  document.getElementById('comp-cols').innerHTML=cols.map(c=>`
-    <div class="comp-col${c.yn?' c2':''}">
+
+  document.getElementById('comp-cols').innerHTML=`
+    <div class="comp-col">
       <div class="comp-col-hd">
-        <div class="comp-dot" style="background:${c.dot}"></div>
+        <div class="comp-dot" style="background:var(--teal)"></div>
         <div>
-          <div class="comp-col-title">${c.lbl}</div>
-          <div style="font-size:.72rem;color:var(--slate)">${c.sub}</div>
+          <div class="comp-col-ttl">Simulação</div>
+          <div style="font-size:.72rem;color:var(--slate-l)">Proteinado</div>
         </div>
       </div>
       <div class="comp-body">${metrics.map(m=>{
-        const v=c.d[m.k],disp=m.pct?fmt(v,2)+'%':m.num?fmt(v,2)+' m':R(v);
+        const v=D1[m.k];
+        const disp=m.pct?fmt(v,2)+'%':m.num?fmt(v,2)+' m':R(v);
         const vc=(m.k==='resultado'||m.k==='margem')?(v>=0?'g':'r'):m.k==='resPorAnimal'?'y':m.k==='receita'?'t':'';
         return `<div class="comp-row"><span class="comp-key">${m.l}</span><span class="comp-v ${vc}">${disp}</span></div>`;
       }).join('')}</div>
-    </div>`).join('');
-  const dw=document.getElementById('delta-wrap');
-  if(D1&&D2){
-    const delta=D2.resultado-D1.resultado,melhor=delta>=0?'Cenário 2':'Cenário 1';
-    dw.innerHTML=`<div class="sec-lbl">Diferença entre Cenários</div>
-      <div class="delta-grid">
-        <div class="delta-card" style="border-color:${delta>=0?'var(--green)':'var(--red)'}">
-          <div class="delta-lbl">Δ Resultado</div>
-          <div class="delta-val" style="color:${delta>=0?'var(--green)':'var(--red)'}">${R(delta)}</div>
-        </div>
-        <div class="delta-card" style="border-color:var(--amber)">
-          <div class="delta-lbl">Melhor Cenário</div>
-          <div class="delta-val" style="color:var(--amber);font-size:1.15rem">${melhor}</div>
-        </div>
-      </div>`;
-  } else dw.innerHTML='';
+    </div>`;
+  document.getElementById('delta-wrap').innerHTML='';
 }
 
-/* ── PONTO DE EQUILÍBRIO ── */
+// ── PONTO DE EQUILÍBRIO ──
 function calcPE(){
-  if(!D1){alert('Calcule o Cenário 1 primeiro.');return;}
-  const arbPE=g('pe_arb'),rendPE=g('pe_rend')/100;
-  const {qtd,pi,pf,gmd,aq,cmg,arr,sal,nf,vlkg,pctforn,out}=D1.params;
-  const mesesTotal=gmd>0?(pf-pi)/gmd/30:0;
+  if(!D1){alert('Calcule a simulação primeiro.');return;}
+  const arbPE  = g('pe_arb');
+  const rendPE = g('pe_rend') / 100;
+  const {qtd,pi,pf,gmd,aq,cmg,arr,sal,nf,vlkg,pctforn,out} = D1.params;
+  const mesesTotal = gmd>0 ? (pf-pi)/gmd/30 : 0;
 
+  // herdados
   document.getElementById('pe-inh').innerHTML=[
-    {l:'Lote',              v:document.getElementById('v1_desc')?.value||'—'},
-    {l:'Cabeças',           v:qtd+' cab.'},
-    {l:'Peso Inicial',      v:fmt(pi,0)+' kg'},
-    {l:'Peso Final',        v:fmt(pf,0)+' kg'},
-    {l:'GMD',               v:fmt(gmd,3)+' kg/dia'},
-    {l:'Prazo',             v:fmt(mesesTotal,2)+' meses'},
-    {l:'Aquisição/animal',  v:R(aq)},
-    {l:'Arrend./mês/cab.',  v:R(arr)},
-    {l:'Supl. R$/kg',       v:R(vlkg)},
-    {l:'Fornecimento',      v:fmt(pctforn*100,2)+'%/dia'},
-    {l:'Custo Gado/mês',    v:R(cmg)},
-    {l:'Outros/mês/cab.',   v:R(out)},
+    {l:'Lote',            v:document.getElementById('v1_desc')?.value||'—'},
+    {l:'Cabeças',         v:qtd+' cab.'},
+    {l:'Peso Inicial',    v:fmt(pi,0)+' kg'},
+    {l:'Peso Final',      v:fmt(pf,0)+' kg'},
+    {l:'GMD',             v:fmt(gmd*1000,0)+' g/dia'},
+    {l:'Prazo',           v:fmt(mesesTotal,2)+' meses'},
+    {l:'Aquisição/animal',v:R(aq)},
+    {l:'Arrendamento/mês',v:R(arr)},
+    {l:'Supl. R$/kg',     v:R(vlkg)},
+    {l:'Consumo diário',  v:fmt(pctforn*100,2)+'%/dia'},
+    {l:'Custo Gado/mês',  v:R(cmg)},
+    {l:'Outros/mês',      v:R(out)},
   ].map(i=>`<div class="inh-item"><div class="inh-lbl">${i.l}</div><div class="inh-val">${i.v}</div></div>`).join('');
 
-  const cMaoMes=(sal*nf)/Math.max(qtd,1);
-  const mesesSim=Math.ceil(mesesTotal)+3;
-  const rows=[];
-  let custAcum=aq,peMes=null;
+  const cMaoMes = (sal*nf) / Math.max(qtd,1);
+  const mesesSim = Math.ceil(mesesTotal)+3;
+  const rows = [];
+  let custAcum = aq, peMes = null;
 
-  for(let m=1;m<=mesesSim;m++){
-    const pIni=Math.min(pi+gmd*30*(m-1),pf);
-    const pFim=Math.min(pi+gmd*30*m,pf);
-    const pMed=(pIni+pFim)/2;
-    const cSupMes=pMed*pctforn*vlkg*30;
-    const cMesTot=cmg+arr+cMaoMes+cSupMes+out;
-    custAcum+=cMesTot;
-    const pesoVenda=pi+gmd*30*m;
-    const arrobM=pesoVenda*rendPE/15;
-    const recM=arrobM*arbPE;
-    const lucroM=recM-custAcum;
-    if(peMes===null&&lucroM>=0)peMes=m;
-    rows.push({m,pesoVenda,arrobM,recM,custAcum,cMesTot,lucroM});
+  for(let m=1; m<=mesesSim; m++){
+    const pIni = Math.min(pi + gmd*30*(m-1), pf);
+    const pFim = Math.min(pi + gmd*30*m,     pf);
+    const pMed = (pIni+pFim)/2;
+    const cSupMes  = pMed * pctforn * vlkg * 30;
+    const cMesTot  = cmg + arr + cMaoMes + cSupMes + out;
+    custAcum += cMesTot;
+    const pesoV  = pi + gmd*30*m;
+    const arrobM = pesoV * rendPE / 15;
+    const recM   = arrobM * arbPE;
+    const lucroM = recM - custAcum;
+    if(peMes===null && lucroM>=0) peMes=m;
+    rows.push({m, pesoV, arrobM, recM, custAcum, cMesTot, lucroM});
   }
 
-  let peExato=peMes;
-  if(peMes&&peMes>1){
-    const pv=rows[peMes-2],cv=rows[peMes-1];
-    peExato=(peMes-1)+Math.abs(pv.lucroM)/(Math.abs(pv.lucroM)+Math.abs(cv.lucroM));
+  let peExato = peMes;
+  if(peMes && peMes>1){
+    const pv=rows[peMes-2], cv=rows[peMes-1];
+    peExato = (peMes-1) + Math.abs(pv.lucroM)/(Math.abs(pv.lucroM)+Math.abs(cv.lucroM));
   }
-  const pesoNoPE=peMes?pi+gmd*30*peExato:null;
-  const arbsNoPE=pesoNoPE?pesoNoPE*rendPE/15:null;
-  const recNoPE=arbsNoPE?arbsNoPE*arbPE:null;
-  const custNoPE=peMes?rows[peMes-1].custAcum:null;
-  const lucroFinal=rows[rows.length-1].lucroM;
+  const pesoNoPE  = peMes ? pi + gmd*30*peExato : null;
+  const arbsNoPE  = pesoNoPE ? pesoNoPE*rendPE/15 : null;
+  const recNoPE   = arbsNoPE ? arbsNoPE*arbPE : null;
+  const custNoPE  = peMes ? rows[peMes-1].custAcum : null;
+  const lucroFin  = rows[rows.length-1].lucroM;
 
   document.getElementById('pe-kpis').innerHTML=[
-    {l:'Ponto de Equilíbrio',   v:peMes?'Mês '+fmt(peExato,1):'Não atingido', c:peMes?'pos':'neg'},
-    {l:'Peso no PE',            v:pesoNoPE?fmt(pesoNoPE,1)+' kg':'—',          c:'info'},
-    {l:'Receita Mínima (PE)',   v:recNoPE?R(recNoPE):'—',                       c:'info'},
-    {l:'Custo Acum. no PE',     v:custNoPE?R(custNoPE):'—',                     c:''},
-    {l:'Custo Mensal/Animal',   v:R(rows[0].cMesTot),                           c:''},
-    {l:'Resultado Final/Animal',v:R(lucroFinal),                                c:lucroFinal>=0?'pos':'neg'},
+    {l:'Ponto de Equilíbrio',    v:peMes?'Mês '+fmt(peExato,1):'Não atingido', c:peMes?'pos':'neg'},
+    {l:'Peso no PE',             v:pesoNoPE?fmt(pesoNoPE,1)+' kg':'—',          c:'info'},
+    {l:'Receita Mínima (PE)',    v:recNoPE?R(recNoPE):'—',                       c:'info'},
+    {l:'Custo Acum. no PE',      v:custNoPE?R(custNoPE):'—',                     c:''},
+    {l:'Custo Mensal/Animal',    v:R(rows[0].cMesTot),                           c:''},
+    {l:'Resultado Final/Animal', v:R(lucroFin),                                  c:lucroFin>=0?'pos':'neg'},
   ].map(k=>`<div class="kpi ${k.c}"><div class="kpi-lbl">${k.l}</div><div class="kpi-val">${k.v}</div></div>`).join('');
 
-  document.getElementById('pe-alert').innerHTML=peMes
+  document.getElementById('pe-alert').innerHTML = peMes
     ?`<div class="pe-alert ok"><div class="pe-alert-icon">✅</div><div>
-        <div class="pe-alert-title">Equilíbrio atingido no Mês ${fmt(peExato,1)}</div>
-        <div class="pe-alert-body">Peso estimado no PE: <strong>${fmt(pesoNoPE,1)} kg</strong> 
-        (${fmt(arbsNoPE,2)} @). Receita mínima necessária: <strong>${R(recNoPE)}</strong> por animal.</div>
+        <div class="pe-alert-ttl">Equilíbrio atingido no Mês ${fmt(peExato,1)}</div>
+        <div class="pe-alert-body">Peso estimado: <strong>${fmt(pesoNoPE,1)} kg</strong> (${fmt(arbsNoPE,2)} @) — Receita mínima: <strong>${R(recNoPE)}</strong>/animal.</div>
       </div></div>`
     :`<div class="pe-alert ng"><div class="pe-alert-icon">⚠️</div><div>
-        <div class="pe-alert-title">Equilíbrio não atingido no período simulado</div>
+        <div class="pe-alert-ttl">Equilíbrio não atingido no período simulado</div>
         <div class="pe-alert-body">Revise o valor da arroba, os custos mensais ou o prazo de engorda.</div>
       </div></div>`;
 
   if(peChart){peChart.destroy();peChart=null;}
-  const maxY=Math.max(...rows.map(r=>r.recM),...rows.map(r=>r.custAcum));
-  const dPE=rows.map(r=>r.m===peMes?maxY:null);
-  peChart=new Chart(document.getElementById('pe-chart').getContext('2d'),{
+  const maxY = Math.max(...rows.map(r=>r.recM), ...rows.map(r=>r.custAcum));
+  const dPE  = rows.map(r=>r.m===peMes ? maxY : null);
+  peChart = new Chart(document.getElementById('pe-chart').getContext('2d'),{
     type:'line',
     data:{
-      labels:rows.map(r=>'Mês '+r.m),
+      labels: rows.map(r=>'Mês '+r.m),
       datasets:[
-        {label:'Custo Acumulado',data:rows.map(r=>+r.custAcum.toFixed(2)),
-         borderColor:'#EF4444',backgroundColor:'rgba(239,68,68,.08)',
+        {label:'Custo Acumulado', data:rows.map(r=>+r.custAcum.toFixed(2)),
+         borderColor:'#F43F5E',backgroundColor:'rgba(244,63,94,.08)',
          borderWidth:2,pointRadius:3,pointHoverRadius:6,tension:.4,fill:true},
-        {label:'Receita Projetada',data:rows.map(r=>+r.recM.toFixed(2)),
+        {label:'Receita Projetada', data:rows.map(r=>+r.recM.toFixed(2)),
          borderColor:'#10B981',backgroundColor:'rgba(16,185,129,.08)',
          borderWidth:2,pointRadius:3,pointHoverRadius:6,tension:.4,fill:true},
-        {label:'PE',data:dPE,borderColor:'rgba(245,166,35,.8)',borderWidth:2,
-         borderDash:[5,4],pointRadius:0,tension:0,fill:false},
+        {label:'PE', data:dPE,
+         borderColor:'rgba(245,158,11,.8)',borderWidth:2,borderDash:[5,4],
+         pointRadius:0,tension:0,fill:false},
       ]
     },
     options:{
@@ -1759,15 +1640,15 @@ function calcPE(){
       plugins:{
         legend:{display:false},
         tooltip:{
-          backgroundColor:'rgba(12,22,41,.97)',borderColor:'rgba(45,212,191,.25)',
-          borderWidth:1,titleColor:'#E8F4FF',bodyColor:'rgba(232,244,255,.7)',padding:14,
+          backgroundColor:'rgba(12,22,41,.97)',borderColor:'rgba(34,211,238,.25)',
+          borderWidth:1,titleColor:'#F0F8FF',bodyColor:'rgba(240,248,255,.7)',padding:14,
           callbacks:{label:c=>c.dataset.label==='PE'?null:` ${c.dataset.label}: R$ ${fmt(c.raw,2)}`}
         }
       },
       scales:{
-        x:{ticks:{color:'#64748B',font:{size:11,family:'DM Sans'}},grid:{color:'rgba(232,244,255,.04)'}},
+        x:{ticks:{color:'#64748B',font:{size:11}},grid:{color:'rgba(240,248,255,.04)'}},
         y:{ticks:{color:'#64748B',font:{size:11},callback:v=>'R$ '+fmt(v,0)},
-           grid:{color:'rgba(232,244,255,.05)'}}
+           grid:{color:'rgba(240,248,255,.05)'}}
       }
     }
   });
@@ -1775,13 +1656,14 @@ function calcPE(){
   document.getElementById('pe-tbl').innerHTML=
     `<thead><tr><th>Mês</th><th>Peso Est. (kg)</th><th>Arrobas (@)</th>
     <th>Receita Venda</th><th>Custo do Mês</th><th>Custo Acumulado</th><th>Lucro / Prejuízo</th></tr></thead><tbody>`+
-    rows.map(r=>{const isPE=r.m===peMes;return `<tr${isPE?' class="pe-row"':''}>
-      <td>${r.m}${isPE?' ★':''}</td><td>${fmt(r.pesoVenda,1)}</td><td>${fmt(r.arrobM,2)}</td>
+    rows.map(r=>{const isPE=r.m===peMes; return `<tr${isPE?' class="pe-row"':''}>
+      <td>${r.m}${isPE?' ★':''}</td><td>${fmt(r.pesoV,1)}</td><td>${fmt(r.arrobM,2)}</td>
       <td class="amt">${R(r.recM)}</td><td>${R(r.cMesTot)}</td><td class="amt">${R(r.custAcum)}</td>
       <td class="${r.lucroM>=0?'grn':'red'}">${R(r.lucroM)}</td></tr>`;}).join('')+'</tbody>';
 
   const rb=document.getElementById('pe-res');
-  rb.style.display='block';rb.scrollIntoView({behavior:'smooth',block:'start'});
+  rb.style.display='block';
+  rb.scrollIntoView({behavior:'smooth',block:'start'});
 }
 </script>
 </body>
