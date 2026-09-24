@@ -870,6 +870,17 @@ footer{
   .rr-grid{grid-template-columns:1fr}
 }
 
+
+/* ── INFO STRIP ── */
+.istrip{display:flex;flex-wrap:wrap;gap:0;margin-top:20px;background:var(--bg1);border:1px solid var(--b2);border-radius:var(--r2);overflow:hidden}
+.istrip-item{flex:1;min-width:130px;padding:12px 18px;border-right:1px solid var(--b3)}
+.istrip-item:last-child{border-right:none}
+.istrip-lbl{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--slate);margin-bottom:4px}
+.istrip-val{font-family:var(--fd);font-size:.95rem;font-weight:700;color:var(--white)}
+/* ── FASE BLOCK ── */
+.fase-blk{border-left:2px solid rgba(245,158,11,.35);padding:16px 0 16px 20px;margin-top:20px}
+.fase-blk+.fase-blk{margin-top:24px}
+.fase-lbl{font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin-bottom:18px}
 </style>
 </head>
 <body>
@@ -890,9 +901,7 @@ footer{
       <div class="logo-tagline">Cálculo de Resultados Pecuários</div>
     </div>
   </div>
-  <div class="header-right">
-    <div class="year-badge">2025</div>
-  </div>
+  <div class="header-right"><div class="year-badge">2025</div></div>
 </header>
 
 <!-- NAV -->
@@ -906,467 +915,258 @@ footer{
 
 <main>
 
-<!-- ════════════════════════════════════════════════
-     CENÁRIO 1 — 1 SUPLEMENTAÇÃO
-════════════════════════════════════════════════ -->
+<!-- ════════════════════════════
+     CENÁRIO 1
+════════════════════════════ -->
 <div class="ps" id="s1">
   <div class="pt">
     <div class="pt-left">
       <div class="pt-eyebrow">Simulação</div>
-      <div class="pt-title">Cálculo de Resultados Pecuários</div>
+      <div class="pt-title">Uma Suplementação</div>
     </div>
-    <div class="pt-badges">
-      <span class="badge badge-c">1 Suplementação</span>
-      <span class="badge badge-c">Proteinado</span>
-    </div>
+    <div class="pt-badges"><span class="badge badge-c">Proteinado</span></div>
   </div>
 
-  <!-- BLOCO 1 — REBANHO -->
-  <div class="bloco">
-    <div class="bloco-hd">
-      <div class="bloco-num">1</div>
-      <div class="bloco-ttl">Informações do Rebanho</div>
+  <!-- 1. Rebanho -->
+  <div class="sc" id="c1s1">
+    <div class="sc-hd" onclick="tog('c1s1')">
+      <div class="sc-num">01</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Informações do Rebanho</div><div class="sc-chv">▼</div>
     </div>
-    <div class="bloco-body">
-      <div class="sim-grid">
-
-        <div class="sim-row header-row">
-          <div class="sim-label">Descrição</div>
-          <div class="sim-label center">Qtd.</div>
-          <div class="sim-label center">Peso Inicial (kg)</div>
-          <div class="sim-label center">Peso Final (kg)</div>
-          <div class="sim-label center">Peso a Ganhar (kg)</div>
-          <div class="sim-label center">R$/kg Vivo (Aquisição)</div>
-          <div class="sim-label center">GMD (g/dia)</div>
-          <div class="sim-label center">Nº Meses p/ Vender</div>
-        </div>
-
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v1_desc" type="text" class="inp-text"></div>
-          <div class="sim-cell"><input id="v1_qtd" type="number" class="inp-num" min="1"></div>
-          <div class="sim-cell"><input id="v1_pi" type="number" class="inp-num" min="0" step="1"></div>
-          <div class="sim-cell"><input id="v1_pf" type="number" class="inp-num" min="0" step="1" oninput="updArb1()"></div>
-          <div class="sim-cell computed" id="v1c_ganho">—</div>
-          <div class="sim-cell"><input id="v1_aq" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell"><input id="v1_gmd" type="number" class="inp-num" min="1" step="1"></div>
-          <div class="sim-cell computed highlight" id="v1c_meses">—</div>
-        </div>
-
+    <div class="sc-body">
+      <div class="fg">
+        <div class="f"><div class="f-lbl">Descrição do Lote</div><input id="v1_desc" type="text" class="f-inp-text"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Qtd. de Cabeças</div><input id="v1_qtd" type="number" min="1"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Peso Inicial (kg/cab.)</div><input id="v1_pi" type="number" min="0" step="1"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Peso Final / Venda (kg/cab.)</div><input id="v1_pf" type="number" min="0" step="1" oninput="updArb1()"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">GMD — Ganho Médio Diário (g/dia)</div><input id="v1_gmd" type="number" min="1" step="1"><div class="f-underline"></div><div class="f-hint">Ex.: 583 g/dia. Prazo calculado automaticamente.</div></div>
+        <div class="f"><div class="f-lbl">Valor de Aquisição (R$/cabeça)</div><input id="v1_aq" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Custo Mensal do Gado (R$/cab./mês)</div><input id="v1_cmg" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Sanidade, vacinas, sal mineral. Use 0 se não houver.</div></div>
       </div>
-
-    </div>
-  </div>
-
-  <!-- BLOCO 2 — ARRENDAMENTO -->
-  <div class="bloco">
-    <div class="bloco-hd">
-      <div class="bloco-num">2</div>
-      <div class="bloco-ttl">Custos de Arrendamento</div>
-    </div>
-    <div class="bloco-body">
-      <div class="sim-grid cols2">
-        <div class="sim-row header-row">
-          <div class="sim-label">Valor Mensal p/ Cabeça (R$)</div>
-          <div class="sim-label center">Custo Total no Período (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v1_arr" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell computed" id="v1c_arr">—</div>
-        </div>
+      <div class="istrip" id="v1_strip" style="display:none">
+        <div class="istrip-item"><div class="istrip-lbl">Peso a Ganhar</div><div class="istrip-val" id="v1s_gp">—</div></div>
+        <div class="istrip-item"><div class="istrip-lbl">Nº Meses p/ Vender</div><div class="istrip-val" id="v1s_m">—</div></div>
+        <div class="istrip-item"><div class="istrip-lbl">Custo Reposição</div><div class="istrip-val" id="v1s_r">—</div></div>
+        <div class="istrip-item"><div class="istrip-lbl">Arrobas / Animal</div><div class="istrip-val" id="v1s_a">—</div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 3 — MÃO DE OBRA -->
-  <div class="bloco">
-    <div class="bloco-hd">
-      <div class="bloco-num">3</div>
-      <div class="bloco-ttl">Custos de Mão de Obra</div>
+  <!-- 2. Arrendamento -->
+  <div class="sc" id="c1s2">
+    <div class="sc-hd" onclick="tog('c1s2')">
+      <div class="sc-num">02</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Custos de Arrendamento</div><div class="sc-chv">▼</div>
     </div>
-    <div class="bloco-body">
-      <div class="sim-grid cols3">
-        <div class="sim-row header-row">
-          <div class="sim-label">Salários e Encargos (R$/func.)</div>
-          <div class="sim-label center">Qtd. Funcionários</div>
-          <div class="sim-label center">Custo Total no Período (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v1_sal" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell"><input id="v1_nf" type="number" class="inp-num" min="0"></div>
-          <div class="sim-cell computed" id="v1c_mao">—</div>
-        </div>
+    <div class="sc-body">
+      <div class="fg fg2">
+        <div class="f"><div class="f-lbl">Valor Mensal p/ Cabeça (R$)</div><input id="v1_arr" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 4 — SUPLEMENTAÇÃO -->
-  <div class="bloco">
-    <div class="bloco-hd">
-      <div class="bloco-num">4</div>
-      <div class="bloco-ttl">Custos de Suplementação <span class="bloco-tag">Proteinado</span></div>
+  <!-- 3. Mão de Obra -->
+  <div class="sc" id="c1s3">
+    <div class="sc-hd" onclick="tog('c1s3')">
+      <div class="sc-num">03</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Custos de Mão de Obra</div><div class="sc-chv">▼</div>
     </div>
-    <div class="bloco-body">
-      <div class="sim-grid cols3">
-        <div class="sim-row header-row">
-          <div class="sim-label">Kg p/ Saco</div>
-          <div class="sim-label center">Valor do Saco (R$)</div>
-          <div class="sim-label center">Custo do Kg (R$)</div>
-        </div>
-        <div class="sim-row data-row" style="margin-bottom:12px">
-          <div class="sim-cell"><input id="v1_kgsc" type="number" class="inp-num" min="1" step="0.5"></div>
-          <div class="sim-cell"><input id="v1_vls" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell computed" id="v1c_vlkg">—</div>
-        </div>
-      </div>
-      <div class="sim-grid cols4">
-        <div class="sim-row header-row">
-          <div class="sim-label">Fornecimento (% do peso vivo/dia)</div>
-          <div class="sim-label center">Consumo Diário (kg/cab.)</div>
-          <div class="sim-label center">Custo Diário (R$/cab.)</div>
-          <div class="sim-label center">Custo Total no Período (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v1_pct" type="number" class="inp-num" min="0.01" step="0.01"></div>
-          <div class="sim-cell computed" id="v1c_cd">—</div>
-          <div class="sim-cell computed" id="v1c_cdd">—</div>
-          <div class="sim-cell computed" id="v1c_sup">—</div>
-        </div>
+    <div class="sc-body">
+      <div class="fg fg2">
+        <div class="f"><div class="f-lbl">Salários e Encargos (R$/funcionário)</div><input id="v1_sal" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Total mensal incluindo INSS, FGTS e demais encargos.</div></div>
+        <div class="f"><div class="f-lbl">Qtd. de Funcionários</div><input id="v1_nf" type="number" min="0"><div class="f-underline"></div><div class="f-hint">Use 0 se não houver mão de obra contratada.</div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 5 — OUTRAS DESPESAS -->
-  <div class="bloco">
-    <div class="bloco-hd">
-      <div class="bloco-num">5</div>
-      <div class="bloco-ttl">Outras Despesas <span class="bloco-sub">Veterinário, combustíveis, etc.</span></div>
+  <!-- 4. Suplementação -->
+  <div class="sc" id="c1s4">
+    <div class="sc-hd" onclick="tog('c1s4')">
+      <div class="sc-num">04</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Custos de Suplementação — Proteinado</div><div class="sc-chv">▼</div>
     </div>
-    <div class="bloco-body">
-      <div class="sim-grid cols2">
-        <div class="sim-row header-row">
-          <div class="sim-label">Valor Médio p/ Cabeça / Mês (R$)</div>
-          <div class="sim-label center">Custo Total no Período (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v1_out" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell computed" id="v1c_out">—</div>
-        </div>
+    <div class="sc-body">
+      <div class="fg fg3">
+        <div class="f"><div class="f-lbl">Kg p/ Saco</div><input id="v1_kgsc" type="number" min="1" step="0.5"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Valor do Saco (R$)</div><input id="v1_vls" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Fornecimento (% do peso vivo/dia)</div><input id="v1_pct" type="number" min="0.01" step="0.01"><div class="f-underline"></div><div class="f-hint">Ex.: 0,1% de 285 kg = 285 g/dia por animal.</div></div>
+      </div>
+      <div class="istrip" id="v1_supstrip" style="display:none">
+        <div class="istrip-item"><div class="istrip-lbl">Custo do Kg</div><div class="istrip-val" id="v1s_vk">—</div></div>
+        <div class="istrip-item"><div class="istrip-lbl">Peso Médio</div><div class="istrip-val" id="v1s_pm">—</div></div>
+        <div class="istrip-item"><div class="istrip-lbl">Consumo Diário/cab.</div><div class="istrip-val" id="v1s_cd">—</div></div>
+        <div class="istrip-item"><div class="istrip-lbl">Custo Diário/cab.</div><div class="istrip-val" id="v1s_cdd">—</div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 6 — CUSTO MENSAL DO GADO -->
-  <div class="bloco">
-    <div class="bloco-hd">
-      <div class="bloco-num">6</div>
-      <div class="bloco-ttl">Custo Mensal do Gado <span class="bloco-sub">Sanidade, vacinas, sal mineral</span></div>
+  <!-- 5. Outras Despesas -->
+  <div class="sc" id="c1s5">
+    <div class="sc-hd" onclick="tog('c1s5')">
+      <div class="sc-num">05</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Outras Despesas</div><div class="sc-chv">▼</div>
     </div>
-    <div class="bloco-body">
-      <div class="sim-grid cols2">
-        <div class="sim-row header-row">
-          <div class="sim-label">Valor p/ Cabeça / Mês (R$)</div>
-          <div class="sim-label center">Custo Total no Período (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v1_cmg" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell computed" id="v1c_cmg">—</div>
-        </div>
+    <div class="sc-body">
+      <div class="fg fg2">
+        <div class="f"><div class="f-lbl">Valor Médio p/ Cabeça / Mês (R$)</div><input id="v1_out" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Veterinário, combustíveis, manutenção.</div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 7 — RESUMO GERAL -->
-  <div class="bloco bloco-resumo">
-    <div class="bloco-hd">
-      <div class="bloco-num resumo-num">7</div>
-      <div class="bloco-ttl">Resumo Geral</div>
+  <!-- 6. Venda -->
+  <div class="sc" id="c1s6">
+    <div class="sc-hd" onclick="tog('c1s6')">
+      <div class="sc-num">06</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Venda do Rebanho</div><div class="sc-chv">▼</div>
     </div>
-    <div class="bloco-body">
-
-      <!-- Venda -->
-      <div class="resumo-section">
-        <div class="resumo-section-ttl">Receitas</div>
-        <div class="resumo-row">
-          <div class="resumo-grid">
-            <div class="sim-row header-row">
-              <div class="sim-label">Valor da Arroba (R$/@)</div>
-              <div class="sim-label center">Rendimento de Carcaça (%)</div>
-              <div class="sim-label center">Arrobas / Animal</div>
-              <div class="sim-label center">Venda do Rebanho (R$)</div>
-            </div>
-            <div class="sim-row data-row">
-              <div class="sim-cell"><input id="v1_arb" type="number" class="inp-num" min="0" step="1" oninput="updArb1()"></div>
-              <div class="sim-cell"><input id="v1_rend" type="number" class="inp-num" min="30" max="70" step="0.1" oninput="updArb1()"></div>
-              <div class="sim-cell computed" id="v1_ac">—</div>
-              <div class="sim-cell computed receita-cell" id="v1c_receita">—</div>
-            </div>
-          </div>
-        </div>
+    <div class="sc-body">
+      <div class="fg fg3">
+        <div class="f"><div class="f-lbl">Valor da Arroba (R$/@)</div><input id="v1_arb" type="number" min="0" step="1" oninput="updArb1()"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Rendimento de Carcaça (%)</div><input id="v1_rend" type="number" min="30" max="70" step="0.1" oninput="updArb1()"><div class="f-underline"></div><div class="f-hint">Padrão Nelore pastagem: 50,5%. Uma @ = 15 kg de carcaça.</div></div>
+        <div class="f"><div class="f-lbl">Arrobas / Animal (calculado)</div><div class="f-calc" id="v1_ac">—</div></div>
       </div>
-
-      <!-- Despesas -->
-      <div class="resumo-section">
-        <div class="resumo-section-ttl">Despesas</div>
-        <div class="resumo-desp-grid" id="v1c_desp_grid">
-          <div class="rdg-hd">Item</div>
-          <div class="rdg-hd right">Custo Total (R$)</div>
-          <div class="rdg-hd right">Custo / Mês (R$)</div>
-        </div>
-      </div>
-
-      <!-- Resultado -->
-      <div class="resumo-resultado" id="v1-resultado" style="display:none">
-        <div class="rr-grid">
-          <div class="rr-item">
-            <div class="rr-lbl">Custo de Produção / Animal</div>
-            <div class="rr-val" id="v1r_cprod">—</div>
-          </div>
-          <div class="rr-item">
-            <div class="rr-lbl">Resultado Total</div>
-            <div class="rr-val result-val" id="v1r_total">—</div>
-          </div>
-          <div class="rr-item">
-            <div class="rr-lbl">Margem %</div>
-            <div class="rr-val result-val" id="v1r_marg">—</div>
-          </div>
-          <div class="rr-item highlight-item">
-            <div class="rr-lbl">Resultado por Animal</div>
-            <div class="rr-val amber-val" id="v1r_animal">—</div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
   <div class="btn-wrap">
-    <button class="btn btn-t" onclick="calcV1()">
-      <span class="btn-icon">⚡</span> Calcular Resultados
-    </button>
+    <button class="btn btn-t" onclick="calcV1()"><span class="btn-icon">⚡</span> Calcular Resultados</button>
   </div>
 
-  <!-- Participação nos Custos -->
   <div class="res-box" id="v1-res">
+    <div class="kpi-grid" id="v1-kpis"></div>
+    <div class="sec-lbl">Custos Totais</div>
+    <div class="tbl-wrap"><table class="bt" id="v1-tbl"></table></div>
     <div class="sec-lbl">Participação nos Custos</div>
     <div class="bars-wrap" id="v1-bars"></div>
   </div>
 </div>
 
-
-<!-- ════════════════════════════════════════════════
-     CENÁRIO 2 — 2 SUPLEMENTAÇÕES
-════════════════════════════════════════════════ -->
+<!-- ════════════════════════════
+     CENÁRIO 2
+════════════════════════════ -->
 <div class="ps" id="s2">
   <div class="pt">
     <div class="pt-left">
       <div class="pt-eyebrow">Simulação</div>
-      <div class="pt-title">Cálculo de Resultados Pecuários</div>
+      <div class="pt-title">Duas Suplementações</div>
     </div>
     <div class="pt-badges">
-      <span class="badge badge-c">2 Suplementações</span>
-      <span class="badge badge-a">Recria + Engorda</span>
+      <span class="badge badge-c">Recria</span>
+      <span class="badge badge-a">Engorda</span>
     </div>
   </div>
 
-  <!-- BLOCO 1 — REBANHO V2 -->
-  <div class="bloco">
-    <div class="bloco-hd">
-      <div class="bloco-num">1</div>
-      <div class="bloco-ttl">Informações do Rebanho</div>
+  <!-- 1. Rebanho V2 -->
+  <div class="sc" id="c2s1">
+    <div class="sc-hd" onclick="tog('c2s1')">
+      <div class="sc-num">01</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Informações do Rebanho</div><div class="sc-chv">▼</div>
     </div>
-    <div class="bloco-body">
-      <!-- Fase 1 -->
-      <div class="fase-label">Fase 1 — Recria (Proteinado)</div>
-      <div class="sim-grid">
-        <div class="sim-row header-row">
-          <div class="sim-label">Descrição</div>
-          <div class="sim-label center">Qtd.</div>
-          <div class="sim-label center">Peso Inicial (kg)</div>
-          <div class="sim-label center">Peso Final F1 (kg)</div>
-          <div class="sim-label center">Peso a Ganhar (kg)</div>
-          <div class="sim-label center">R$/kg Vivo (Aquisição)</div>
-          <div class="sim-label center">GMD Fase 1 (g/dia)</div>
-          <div class="sim-label center">Meses Fase 1</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v2_d1" type="text" class="inp-text"></div>
-          <div class="sim-cell"><input id="v2_qtd" type="number" class="inp-num" min="1"></div>
-          <div class="sim-cell"><input id="v2_pi" type="number" class="inp-num" min="0" step="1"></div>
-          <div class="sim-cell"><input id="v2_pf1" type="number" class="inp-num" min="0" step="1"></div>
-          <div class="sim-cell computed" id="v2c_g1">—</div>
-          <div class="sim-cell"><input id="v2_aq" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell"><input id="v2_g1" type="number" class="inp-num" min="1" step="1"></div>
-          <div class="sim-cell computed highlight" id="v2c_m1">—</div>
+    <div class="sc-body">
+      <div class="fase-blk">
+        <div class="fase-lbl">Fase 1 — Recria (Proteinado)</div>
+        <div class="fg">
+          <div class="f"><div class="f-lbl">Descrição</div><input id="v2_d1" type="text" class="f-inp-text"><div class="f-underline"></div></div>
+          <div class="f"><div class="f-lbl">Qtd. de Cabeças</div><input id="v2_qtd" type="number" min="1"><div class="f-underline"></div></div>
+          <div class="f"><div class="f-lbl">Peso Inicial (kg/cab.)</div><input id="v2_pi" type="number" min="0" step="1"><div class="f-underline"></div></div>
+          <div class="f"><div class="f-lbl">Peso Final Fase 1 (kg/cab.)</div><input id="v2_pf1" type="number" min="0" step="1"><div class="f-underline"></div></div>
+          <div class="f"><div class="f-lbl">GMD Fase 1 (g/dia)</div><input id="v2_g1" type="number" min="1" step="1"><div class="f-underline"></div></div>
+          <div class="f"><div class="f-lbl">Valor de Aquisição (R$/cabeça)</div><input id="v2_aq" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
+          <div class="f"><div class="f-lbl">Custo Mensal do Gado (R$/cab./mês)</div><input id="v2_cmg" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Sanidade, vacinas, sal mineral. Use 0 se não houver.</div></div>
         </div>
       </div>
-      <!-- Fase 2 -->
-      <div class="fase-label" style="margin-top:18px">Fase 2 — Engorda (Proteico Energético)</div>
-      <div class="sim-grid cols4">
-        <div class="sim-row header-row">
-          <div class="sim-label">Descrição</div>
-          <div class="sim-label center">Peso Final F2 / Venda (kg)</div>
-          <div class="sim-label center">GMD Fase 2 (g/dia)</div>
-          <div class="sim-label center">Meses Fase 2</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v2_d2" type="text" class="inp-text"></div>
-          <div class="sim-cell"><input id="v2_pf2" type="number" class="inp-num" min="0" step="1" oninput="updArb2()"></div>
-          <div class="sim-cell"><input id="v2_g2" type="number" class="inp-num" min="1" step="1"></div>
-          <div class="sim-cell computed highlight" id="v2c_m2">—</div>
-        </div>
-      </div>
-      <div class="inp-note">Meses totais: <strong id="v2c_mtot">—</strong></div>
-    </div>
-  </div>
-
-  <!-- BLOCO 2 — ARRENDAMENTO V2 -->
-  <div class="bloco">
-    <div class="bloco-hd"><div class="bloco-num">2</div><div class="bloco-ttl">Custos de Arrendamento</div></div>
-    <div class="bloco-body">
-      <div class="sim-grid cols2">
-        <div class="sim-row header-row">
-          <div class="sim-label">Valor Mensal p/ Cabeça (R$)</div>
-          <div class="sim-label center">Custo Total no Período (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v2_arr" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell computed" id="v2c_arr">—</div>
+      <div class="fase-blk">
+        <div class="fase-lbl">Fase 2 — Engorda (Proteico Energético)</div>
+        <div class="fg">
+          <div class="f"><div class="f-lbl">Descrição</div><input id="v2_d2" type="text" class="f-inp-text"><div class="f-underline"></div></div>
+          <div class="f"><div class="f-lbl">Peso Final Fase 2 / Venda (kg)</div><input id="v2_pf2" type="number" min="0" step="1" oninput="updArb2()"><div class="f-underline"></div></div>
+          <div class="f"><div class="f-lbl">GMD Fase 2 (g/dia)</div><input id="v2_g2" type="number" min="1" step="1"><div class="f-underline"></div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 3 — MÃO DE OBRA V2 -->
-  <div class="bloco">
-    <div class="bloco-hd"><div class="bloco-num">3</div><div class="bloco-ttl">Custos de Mão de Obra</div></div>
-    <div class="bloco-body">
-      <div class="sim-grid cols3">
-        <div class="sim-row header-row">
-          <div class="sim-label">Salários e Encargos (R$/func.)</div>
-          <div class="sim-label center">Qtd. Funcionários</div>
-          <div class="sim-label center">Custo Total no Período (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v2_sal" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell"><input id="v2_nf" type="number" class="inp-num" min="0"></div>
-          <div class="sim-cell computed" id="v2c_mao">—</div>
-        </div>
+  <!-- 2. Arrendamento V2 -->
+  <div class="sc" id="c2s2">
+    <div class="sc-hd" onclick="tog('c2s2')">
+      <div class="sc-num">02</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Custos de Arrendamento</div><div class="sc-chv">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="fg fg2">
+        <div class="f"><div class="f-lbl">Valor Mensal p/ Cabeça (R$)</div><input id="v2_arr" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 4 — SUPLEMENTAÇÃO FASE 1 V2 -->
-  <div class="bloco">
-    <div class="bloco-hd"><div class="bloco-num">4</div><div class="bloco-ttl">Suplementação Fase 1 <span class="bloco-tag">Proteinado — Recria</span></div></div>
-    <div class="bloco-body">
-      <div class="sim-grid cols4">
-        <div class="sim-row header-row">
-          <div class="sim-label">Kg p/ Saco</div>
-          <div class="sim-label center">Valor do Saco (R$)</div>
-          <div class="sim-label center">Fornecimento (% peso vivo/dia)</div>
-          <div class="sim-label center">Custo Total Fase 1 (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v2_kg1" type="number" class="inp-num" min="1" step="0.5"></div>
-          <div class="sim-cell"><input id="v2_vl1" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell"><input id="v2_p1" type="number" class="inp-num" min="0.01" step="0.01"></div>
-          <div class="sim-cell computed" id="v2c_s1">—</div>
-        </div>
+  <!-- 3. Mão de Obra V2 -->
+  <div class="sc" id="c2s3">
+    <div class="sc-hd" onclick="tog('c2s3')">
+      <div class="sc-num">03</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Custos de Mão de Obra</div><div class="sc-chv">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="fg fg2">
+        <div class="f"><div class="f-lbl">Salários e Encargos (R$/funcionário)</div><input id="v2_sal" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Total mensal incluindo INSS, FGTS e demais encargos.</div></div>
+        <div class="f"><div class="f-lbl">Qtd. de Funcionários</div><input id="v2_nf" type="number" min="0"><div class="f-underline"></div><div class="f-hint">Use 0 se não houver mão de obra contratada.</div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 4.1 — SUPLEMENTAÇÃO FASE 2 V2 -->
-  <div class="bloco">
-    <div class="bloco-hd"><div class="bloco-num" style="color:var(--amber)">4.1</div><div class="bloco-ttl">Suplementação Fase 2 <span class="bloco-tag" style="background:var(--amber-glow);color:var(--amber);border-color:rgba(245,158,11,.3)">Proteico Energético — Engorda</span></div></div>
-    <div class="bloco-body">
-      <div class="sim-grid cols4">
-        <div class="sim-row header-row">
-          <div class="sim-label">Kg p/ Saco</div>
-          <div class="sim-label center">Valor do Saco (R$)</div>
-          <div class="sim-label center">Fornecimento (% peso vivo/dia)</div>
-          <div class="sim-label center">Custo Total Fase 2 (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v2_kg2" type="number" class="inp-num" min="1" step="0.5"></div>
-          <div class="sim-cell"><input id="v2_vl2" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell"><input id="v2_p2" type="number" class="inp-num" min="0.01" step="0.01"></div>
-          <div class="sim-cell computed" id="v2c_s2">—</div>
-        </div>
+  <!-- 4. Supl Fase 1 V2 -->
+  <div class="sc" id="c2s4">
+    <div class="sc-hd" onclick="tog('c2s4')">
+      <div class="sc-num">04</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Suplementação Fase 1 — Proteinado</div><div class="sc-chv">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="fg fg3">
+        <div class="f"><div class="f-lbl">Kg p/ Saco</div><input id="v2_kg1" type="number" min="1" step="0.5"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Valor do Saco (R$)</div><input id="v2_vl1" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Fornecimento (% do peso vivo/dia)</div><input id="v2_p1" type="number" min="0.01" step="0.01"><div class="f-underline"></div><div class="f-hint">Recria: padrão 0,1%</div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 5 — OUTRAS V2 -->
-  <div class="bloco">
-    <div class="bloco-hd"><div class="bloco-num">5</div><div class="bloco-ttl">Outras Despesas</div></div>
-    <div class="bloco-body">
-      <div class="sim-grid cols2">
-        <div class="sim-row header-row">
-          <div class="sim-label">Valor Médio p/ Cabeça / Mês (R$)</div>
-          <div class="sim-label center">Custo Total no Período (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v2_out" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell computed" id="v2c_out">—</div>
-        </div>
+  <!-- 4.1 Supl Fase 2 V2 -->
+  <div class="sc" id="c2s41">
+    <div class="sc-hd" onclick="tog('c2s41')">
+      <div class="sc-num" style="color:var(--amber)">4.1</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Suplementação Fase 2 — Proteico Energético</div><div class="sc-chv">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="fg fg3">
+        <div class="f"><div class="f-lbl">Kg p/ Saco</div><input id="v2_kg2" type="number" min="1" step="0.5"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Valor do Saco (R$)</div><input id="v2_vl2" type="number" min="0" step="0.01"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Fornecimento (% do peso vivo/dia)</div><input id="v2_p2" type="number" min="0.01" step="0.01"><div class="f-underline"></div><div class="f-hint">Engorda: 0,3% a 1%</div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 6 — CUSTO MENSAL GADO V2 -->
-  <div class="bloco">
-    <div class="bloco-hd"><div class="bloco-num">6</div><div class="bloco-ttl">Custo Mensal do Gado</div></div>
-    <div class="bloco-body">
-      <div class="sim-grid cols2">
-        <div class="sim-row header-row">
-          <div class="sim-label">Valor p/ Cabeça / Mês (R$)</div>
-          <div class="sim-label center">Custo Total no Período (R$)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="v2_cmg" type="number" class="inp-num" min="0" step="0.01"></div>
-          <div class="sim-cell computed" id="v2c_cmg">—</div>
-        </div>
+  <!-- 5. Outras V2 -->
+  <div class="sc" id="c2s5">
+    <div class="sc-hd" onclick="tog('c2s5')">
+      <div class="sc-num">05</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Outras Despesas</div><div class="sc-chv">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="fg fg2">
+        <div class="f"><div class="f-lbl">Valor Médio p/ Cabeça / Mês (R$)</div><input id="v2_out" type="number" min="0" step="0.01"><div class="f-underline"></div><div class="f-hint">Veterinário, combustíveis, manutenção.</div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCO 7 — RESUMO GERAL V2 -->
-  <div class="bloco bloco-resumo">
-    <div class="bloco-hd"><div class="bloco-num resumo-num">7</div><div class="bloco-ttl">Resumo Geral</div></div>
-    <div class="bloco-body">
-      <div class="resumo-section">
-        <div class="resumo-section-ttl">Receitas</div>
-        <div class="resumo-grid">
-          <div class="sim-row header-row">
-            <div class="sim-label">Valor da Arroba (R$/@)</div>
-            <div class="sim-label center">Rendimento de Carcaça (%)</div>
-            <div class="sim-label center">Arrobas / Animal</div>
-            <div class="sim-label center">Venda do Rebanho (R$)</div>
-          </div>
-          <div class="sim-row data-row">
-            <div class="sim-cell"><input id="v2_arb" type="number" class="inp-num" min="0" step="1" oninput="updArb2()"></div>
-            <div class="sim-cell"><input id="v2_rend" type="number" class="inp-num" min="30" max="70" step="0.1" oninput="updArb2()"></div>
-            <div class="sim-cell computed" id="v2_ac">—</div>
-            <div class="sim-cell computed receita-cell" id="v2c_receita">—</div>
-          </div>
-        </div>
-      </div>
-      <div class="resumo-section">
-        <div class="resumo-section-ttl">Despesas</div>
-        <div class="resumo-desp-grid" id="v2c_desp_grid">
-          <div class="rdg-hd">Item</div>
-          <div class="rdg-hd right">Custo Total (R$)</div>
-          <div class="rdg-hd right">Custo / Mês (R$)</div>
-        </div>
-      </div>
-      <div class="resumo-resultado" id="v2-resultado" style="display:none">
-        <div class="rr-grid">
-          <div class="rr-item"><div class="rr-lbl">Custo de Produção / Animal</div><div class="rr-val" id="v2r_cprod">—</div></div>
-          <div class="rr-item"><div class="rr-lbl">Resultado Total</div><div class="rr-val result-val" id="v2r_total">—</div></div>
-          <div class="rr-item"><div class="rr-lbl">Margem %</div><div class="rr-val result-val" id="v2r_marg">—</div></div>
-          <div class="rr-item highlight-item"><div class="rr-lbl">Resultado por Animal</div><div class="rr-val amber-val" id="v2r_animal">—</div></div>
-        </div>
+  <!-- 6. Venda V2 -->
+  <div class="sc" id="c2s6">
+    <div class="sc-hd" onclick="tog('c2s6')">
+      <div class="sc-num">06</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Venda do Rebanho</div><div class="sc-chv">▼</div>
+    </div>
+    <div class="sc-body">
+      <div class="fg fg3">
+        <div class="f"><div class="f-lbl">Valor da Arroba (R$/@)</div><input id="v2_arb" type="number" min="0" step="1" oninput="updArb2()"><div class="f-underline"></div></div>
+        <div class="f"><div class="f-lbl">Rendimento de Carcaça (%)</div><input id="v2_rend" type="number" min="30" max="70" step="0.1" oninput="updArb2()"><div class="f-underline"></div><div class="f-hint">Padrão Nelore pastagem: 50,5%. Uma @ = 15 kg de carcaça.</div></div>
+        <div class="f"><div class="f-lbl">Arrobas / Animal (calculado)</div><div class="f-calc" id="v2_ac">—</div></div>
       </div>
     </div>
   </div>
@@ -1374,15 +1174,19 @@ footer{
   <div class="btn-wrap">
     <button class="btn btn-a" onclick="calcV2()"><span class="btn-icon">⚡</span> Calcular Resultados</button>
   </div>
+
   <div class="res-box" id="v2-res">
+    <div class="kpi-grid" id="v2-kpis"></div>
+    <div class="sec-lbl">Custos Totais</div>
+    <div class="tbl-wrap"><table class="bt" id="v2-tbl"></table></div>
     <div class="sec-lbl">Participação nos Custos</div>
     <div class="bars-wrap" id="v2-bars"></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════
+<!-- ════════════════════════════
      COMPARATIVO
-════════════════════════════════════════════════ -->
+════════════════════════════ -->
 <div class="ps" id="s3">
   <div class="pt">
     <div class="pt-left">
@@ -1399,9 +1203,9 @@ footer{
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════
+<!-- ════════════════════════════
      PONTO DE EQUILÍBRIO
-════════════════════════════════════════════════ -->
+════════════════════════════ -->
 <div class="ps" id="s4">
   <div class="pt">
     <div class="pt-left">
@@ -1413,10 +1217,8 @@ footer{
 
   <div class="sc" id="pes1">
     <div class="sc-hd" onclick="tog('pes1')">
-      <div class="sc-num" style="color:var(--green)">IN</div>
-      <div class="sc-divider"></div>
-      <div class="sc-ttl">Parâmetros Herdados do Cenário 1</div>
-      <div class="sc-chv">▼</div>
+      <div class="sc-num" style="color:var(--green)">IN</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Parâmetros Herdados do Cenário 1</div><div class="sc-chv">▼</div>
     </div>
     <div class="sc-body">
       <div class="inh-grid" id="pe-inh">
@@ -1427,21 +1229,13 @@ footer{
 
   <div class="sc" id="pes2">
     <div class="sc-hd" onclick="tog('pes2')">
-      <div class="sc-num" style="color:var(--green)">SIM</div>
-      <div class="sc-divider"></div>
-      <div class="sc-ttl">Parâmetros de Simulação</div>
-      <div class="sc-chv">▼</div>
+      <div class="sc-num" style="color:var(--green)">SIM</div><div class="sc-divider"></div>
+      <div class="sc-ttl">Parâmetros de Simulação</div><div class="sc-chv">▼</div>
     </div>
     <div class="sc-body">
-      <div class="sim-grid cols2" style="max-width:520px">
-        <div class="sim-row header-row">
-          <div class="sim-label">Valor da Arroba (R$/@)</div>
-          <div class="sim-label center">Rendimento de Carcaça (%)</div>
-        </div>
-        <div class="sim-row data-row">
-          <div class="sim-cell"><input id="pe_arb" type="number" class="inp-num" min="1" step="1"></div>
-          <div class="sim-cell"><input id="pe_rend" type="number" class="inp-num" min="30" max="70" step="0.1"></div>
-        </div>
+      <div class="fg fg2">
+        <div class="f"><div class="f-lbl">Valor da Arroba (R$/@)</div><input id="pe_arb" type="number" min="1" step="1"><div class="f-underline"></div><div class="f-hint">Simule diferentes preços sem alterar o Cenário 1.</div></div>
+        <div class="f"><div class="f-lbl">Rendimento de Carcaça (%)</div><input id="pe_rend" type="number" min="30" max="70" step="0.1"><div class="f-underline"></div><div class="f-hint">% do peso vivo convertido em carcaça. Uma @ = 15 kg.</div></div>
       </div>
     </div>
   </div>
@@ -1466,9 +1260,9 @@ footer{
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════
+<!-- ════════════════════════════
      GLOSSÁRIO
-════════════════════════════════════════════════ -->
+════════════════════════════ -->
 <div class="ps" id="s5">
   <div class="pt">
     <div class="pt-left">
@@ -1484,10 +1278,10 @@ footer{
         <tr><td class="td-name">Qtd. de Cabeças</td><td>Número total de animais no lote</td><td>animais</td><td>13</td></tr>
         <tr><td class="td-name">Peso Inicial</td><td>Peso médio de cada animal na entrada do lote</td><td>kg/cab.</td><td>180</td></tr>
         <tr><td class="td-name">Peso Final / Venda</td><td>Peso médio alvo no momento da venda ao frigorífico</td><td>kg/cab.</td><td>390</td></tr>
-        <tr><td class="td-name">R$/kg Vivo (Aquisição)</td><td>Valor total pago por cabeça na compra do lote</td><td>R$/cab.</td><td>1.800,00</td></tr>
-        <tr><td class="td-name">GMD</td><td>Ganho Médio Diário — quanto o animal engorda por dia. Inserir em g/dia. O prazo em meses é calculado automaticamente.</td><td>g/dia</td><td>583</td></tr>
+        <tr><td class="td-name">Valor de Aquisição</td><td>Valor total pago por cabeça na compra do lote</td><td>R$/cab.</td><td>1.800,00</td></tr>
+        <tr><td class="td-name">GMD</td><td>Ganho Médio Diário — quanto o animal engorda por dia</td><td>g/dia</td><td>583</td></tr>
         <tr><td class="td-name">Valor Mensal p/ Cabeça</td><td>Custo da terra pago mensalmente por animal ao arrendatário</td><td>R$/cab./mês</td><td>55,00</td></tr>
-        <tr><td class="td-name">Salários e Encargos</td><td>Custo mensal total de um funcionário incluindo INSS, FGTS e demais encargos</td><td>R$/func.</td><td>2.000,00</td></tr>
+        <tr><td class="td-name">Salários e Encargos</td><td>Custo mensal total de um funcionário com INSS, FGTS e encargos</td><td>R$/func.</td><td>2.000,00</td></tr>
         <tr><td class="td-name">Kg p/ Saco</td><td>Quantidade de suplemento por embalagem</td><td>kg</td><td>30</td></tr>
         <tr><td class="td-name">Valor do Saco</td><td>Preço pago por saco de suplemento</td><td>R$</td><td>52,50</td></tr>
         <tr><td class="td-name">Fornecimento (%)</td><td>Percentual do peso vivo do animal oferecido em suplemento por dia. Ex.: 0,1% de 285 kg = 285 g/dia.</td><td>%/dia</td><td>0,1</td></tr>
@@ -1504,7 +1298,7 @@ footer{
       <thead><tr><th>Indicador</th><th>Fórmula</th></tr></thead>
       <tbody>
         <tr><td class="td-name">Nº Meses p/ Vender</td><td style="font-family:var(--fd)">(Peso Final − Peso Inicial) ÷ (GMD g/dia ÷ 1000) ÷ 30</td></tr>
-        <tr><td class="td-name">Custo Reposição</td><td style="font-family:var(--fd)">Qtd. × R$/kg Vivo (Aquisição)</td></tr>
+        <tr><td class="td-name">Custo Reposição</td><td style="font-family:var(--fd)">Qtd. × Valor de Aquisição/cab.</td></tr>
         <tr><td class="td-name">Custo Arrendamento Total</td><td style="font-family:var(--fd)">R$/cab./mês × Qtd. × Nº Meses</td></tr>
         <tr><td class="td-name">Consumo Diário (kg/cab.)</td><td style="font-family:var(--fd)">Peso Médio × (Fornecimento % ÷ 100)</td></tr>
         <tr><td class="td-name">Custo Suplementação Total</td><td style="font-family:var(--fd)">Consumo Diário × R$/kg × (Nº Meses × 30) × Qtd.</td></tr>
@@ -1520,7 +1314,6 @@ footer{
 </div>
 
 </main>
-
 <footer></footer>
 
 <script>
@@ -1535,6 +1328,16 @@ function tog(id){document.getElementById(id).classList.toggle('closed')}
 /* ── RESET: esconde resultados ao editar qualquer campo ── */
 function resetV1(){
   D1=null;
+  // strips
+  const s1=document.getElementById('v1_strip');if(s1)s1.style.display='none';
+  const ss1=document.getElementById('v1_supstrip');if(ss1)ss1.style.display='none';
+  const ac1=document.getElementById('v1_ac');if(ac1)ac1.textContent='—';
+  const rb1=document.getElementById('v1-res');if(rb1)rb1.style.display='none';
+  document.getElementById('pe-res').style.display='none';
+  document.getElementById('pe-inh').innerHTML='<div style="grid-column:1/-1;font-size:.83rem;color:var(--slate);padding:12px">Calcule o Cenário 1 para habilitar este módulo.</div>';
+  if(peChart){peChart.destroy();peChart=null;}
+  refreshComp();
+  return; // skip old clearIds
   const clearIds=['v1c_ganho','v1c_meses','v1c_arr','v1c_mao','v1c_vlkg','v1c_cd','v1c_cdd',
     'v1c_sup','v1c_out','v1c_cmg','v1_ac','v1c_receita','v1r_cprod','v1r_total','v1r_marg','v1r_animal'];
   clearIds.forEach(id=>setEl(id,'—'));
@@ -1550,6 +1353,10 @@ function resetV1(){
 }
 function resetV2(){
   D2=null;
+  const ac2=document.getElementById('v2_ac');if(ac2)ac2.textContent='—';
+  const rb2=document.getElementById('v2-res');if(rb2)rb2.style.display='none';
+  refreshComp();
+  return;
   const clearIds2=['v2c_g1','v2c_m1','v2c_m2','v2c_mtot','v2c_arr','v2c_mao',
     'v2c_s1','v2c_s2','v2c_out','v2c_cmg','v2_ac','v2c_receita','v2r_cprod','v2r_total','v2r_marg','v2r_animal'];
   clearIds2.forEach(id=>setEl(id,'—'));
@@ -1654,7 +1461,19 @@ function calcV1(){
   const receita=arrobas*qtd*arb,res=receita-total,marg=receita>0?res/receita*100:0;
   const totMes=rArr/meses+(rMao/meses||0)+cdd*qtd*30+cmg*qtd+out*qtd;
 
-  // Campos inline do novo layout
+  // strips informativos
+  const s1=document.getElementById('v1_strip');if(s1)s1.style.display='flex';
+  setEl('v1s_gp',fmt(pf-pi,0)+' kg');
+  setEl('v1s_m',fmt(meses,2)+' meses');
+  setEl('v1s_r',R(rAq));
+  setEl('v1s_a',fmt(arrobas,2)+' @');
+  const ss1=document.getElementById('v1_supstrip');if(ss1)ss1.style.display='flex';
+  setEl('v1s_vk',R(vlkg)+'/kg');
+  setEl('v1s_pm',fmt(pm,1)+' kg');
+  setEl('v1s_cd',fmt(cd,3)+' kg/dia');
+  setEl('v1s_cdd',R(cdd)+'/dia');
+  setEl('v1_ac',fmt(arrobas,2)+' @');
+  // Campos inline do novo layout — ignorados (não existem)
   setEl('v1c_ganho',fmt(pf-pi,0)+' kg');
   setEl('v1c_meses',fmt(meses,2)+' meses');
   setEl('v1c_arr',R(rArr));
